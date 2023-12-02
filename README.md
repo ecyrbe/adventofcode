@@ -1,4 +1,7 @@
-# ADVENT OF CODE SOLUTIONS
+# ADVENT OF CODE SOLUTIONS IN TYPESCRIPT
+
+Interresting approach is that i use Generators. This makes the solutions use less memory (no temporary arrays) and easier to read.
+Here are the tools for helping using Generators : [Generator helpers](2023/common.ts)
 
 ## 2023
 
