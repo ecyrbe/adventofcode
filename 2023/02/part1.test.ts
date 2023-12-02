@@ -1,14 +1,7 @@
 import { describe, it, expect } from "vitest";
-import {
-  load,
-  lines,
-  map,
-  filter,
-  reduce,
-  pipe,
-  split,
-  every,
-} from "../common";
+import { split, lines, load, map, filter } from "@utils/generators";
+import { reduce, every } from "@utils/reducers";
+import { pipe } from "@utils/pipe";
 
 const LEGAL = {
   red: 12,

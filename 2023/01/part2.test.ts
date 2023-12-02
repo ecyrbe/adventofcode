@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { load, lines, pipe, map, reduce, firstAndLast } from "../common";
+import { firstAndLast, lines, load, map } from "@utils/generators";
+import { reduce } from "@utils/reducers";
+import { pipe } from "@utils/pipe";
 
 const ALPHADIGITSMAP = {
   one: 1,

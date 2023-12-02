@@ -1,5 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { load, lines, pipe, map, reduce, firstAndLast } from "../common";
+import { firstAndLast, lines, load, map } from "@utils/generators";
+import { reduce } from "@utils/reducers";
+import { pipe } from "@utils/pipe";
 
 const DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 

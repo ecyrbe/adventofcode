@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { pipe } from "./pipe";
 
 export function load(dir: string) {
   return fs.readFileSync(path.join(dir, "./input.txt"), "utf-8");
@@ -39,16 +40,6 @@ export function map<T, U>(fn: (item: T) => U) {
   };
 }
 
-export function reduce<T, U>(fn: (sum: U, item: T) => U, initial: U) {
-  return function (input: Iterable<T>) {
-    let sum = initial;
-    for (const item of input) {
-      sum = fn(sum, item);
-    }
-    return sum;
-  };
-}
-
 export function take<T>(count: number) {
   return function* (input: Iterable<T>) {
     let i = 0;
@@ -70,14 +61,6 @@ export function drop<T>(count: number) {
   };
 }
 
-export function last<T>(input: Iterable<T>) {
-  let last: T | undefined;
-  for (const item of input) {
-    last = item;
-  }
-  return last;
-}
-
 export function* firstAndLast<T>(input: Iterable<T>) {
   let last: T | undefined;
   for (const item of input) {
@@ -94,53 +77,6 @@ export function tap<T>(fn: (item: T) => void) {
     for (const item of input) {
       fn(item);
       yield item;
-    }
-  };
-}
-
-export function toArray<T>(input: Iterable<T>) {
-  return [...input];
-}
-
-export function toSet<T>(input: Iterable<T>) {
-  return new Set(input);
-}
-
-export function toMap<T, U>(input: Iterable<[T, U]>) {
-  return new Map(input);
-}
-
-export function some<T>(fn: (item: T) => boolean) {
-  return function (input: Iterable<T>) {
-    for (const item of input) {
-      if (fn(item)) return true;
-    }
-    return false;
-  };
-}
-
-export function includes<T>(item: T) {
-  return function (input: Iterable<T>) {
-    for (const inner of input) {
-      if (item === inner) return true;
-    }
-    return false;
-  };
-}
-
-export function every<T>(fn: (item: T) => boolean) {
-  return function (input: Iterable<T>) {
-    for (const item of input) {
-      if (!fn(item)) return false;
-    }
-    return true;
-  };
-}
-
-export function find<T>(fn: (item: T) => boolean) {
-  return function (input: Iterable<T>) {
-    for (const item of input) {
-      if (fn(item)) return item;
     }
   };
 }
@@ -241,101 +177,4 @@ export function* chunkBy<T>(input: Iterable<T>, fn: (item: T) => boolean) {
     chunk.push(item);
   }
   if (chunk.length > 0) yield chunk;
-}
-
-export function min<T>(input: Iterable<T>) {
-  let min: T | undefined;
-  for (const item of input) {
-    if (!min || item < min) {
-      min = item;
-    }
-  }
-  return min;
-}
-
-export function max<T>(input: Iterable<T>) {
-  let max: T | undefined;
-  for (const item of input) {
-    if (!max || item > max) {
-      max = item;
-    }
-  }
-  return max;
-}
-
-export function sum(input: Iterable<number>) {
-  let sum = 0;
-  for (const item of input) {
-    sum += item;
-  }
-  return sum;
-}
-
-export function average(input: Iterable<number>) {
-  let sum = 0;
-  let count = 0;
-  for (const item of input) {
-    sum += item;
-    count++;
-  }
-  if (count === 0) return 0;
-  return sum / count;
-}
-
-export function count<T>(input: Iterable<T>) {
-  let count = 0;
-  for (const item of input) {
-    count++;
-  }
-  return count;
-}
-
-export function pipe<A, B>(input: A, fn: (input: A) => B): B;
-export function pipe<A, B, C>(
-  input: A,
-  fn1: (input: A) => B,
-  fn2: (input: B) => C
-): C;
-export function pipe<A, B, C, D>(
-  input: A,
-  fn1: (input: A) => B,
-  fn2: (input: B) => C,
-  fn3: (input: C) => D
-): D;
-export function pipe<A, B, C, D, E>(
-  input: A,
-  fn1: (input: A) => B,
-  fn2: (input: B) => C,
-  fn3: (input: C) => D,
-  fn4: (input: D) => E
-): E;
-export function pipe<A, B, C, D, E, F>(
-  input: A,
-  fn1: (input: A) => B,
-  fn2: (input: B) => C,
-  fn3: (input: C) => D,
-  fn4: (input: D) => E,
-  fn5: (input: E) => F
-): F;
-export function pipe<A, B, C, D, E, F, G>(
-  input: A,
-  fn1: (input: A) => B,
-  fn2: (input: B) => C,
-  fn3: (input: C) => D,
-  fn4: (input: D) => E,
-  fn5: (input: E) => F,
-  fn6: (input: F) => G
-): G;
-export function pipe<A, B, C, D, E, F, G, H>(
-  input: A,
-  fn1: (input: A) => B,
-  fn2: (input: B) => C,
-  fn3: (input: C) => D,
-  fn4: (input: D) => E,
-  fn5: (input: E) => F,
-  fn6: (input: F) => G,
-  fn7: (input: G) => H
-): H;
-export function pipe(input: any, ...fns: any[]) {
-  return fns.reduce((input, fn) => fn(input), input);
 }
