@@ -107,6 +107,15 @@ export function some<T>(fn: (item: T) => boolean) {
   };
 }
 
+export function includes<T>(item: T) {
+  return function (input: Iterable<T>) {
+    for (const inner of input) {
+      if (item === inner) return true;
+    }
+    return false;
+  };
+}
+
 export function every<T>(fn: (item: T) => boolean) {
   return function (input: Iterable<T>) {
     for (const item of input) {
@@ -188,6 +197,13 @@ export function* unique<T>(input: Iterable<T>) {
       seen.add(item);
       yield item;
     }
+  }
+}
+
+export function* duplicate<T>(input: Iterable<T>) {
+  for (const item of input) {
+    yield item;
+    yield item;
   }
 }
 
@@ -280,6 +296,25 @@ export function pipe<A, B, C, D, E, F>(
   fn4: (input: D) => E,
   fn5: (input: E) => F
 ): F;
+export function pipe<A, B, C, D, E, F, G>(
+  input: A,
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+  fn5: (input: E) => F,
+  fn6: (input: F) => G
+): G;
+export function pipe<A, B, C, D, E, F, G, H>(
+  input: A,
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+  fn5: (input: E) => F,
+  fn6: (input: F) => G,
+  fn7: (input: G) => H
+): H;
 export function pipe(input: any, ...fns: any[]) {
   return fns.reduce((input, fn) => fn(input), input);
 }
