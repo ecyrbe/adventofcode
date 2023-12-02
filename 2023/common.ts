@@ -98,6 +98,18 @@ export function tap<T>(fn: (item: T) => void) {
   };
 }
 
+export function toArray<T>(input: Iterable<T>) {
+  return [...input];
+}
+
+export function toSet<T>(input: Iterable<T>) {
+  return new Set(input);
+}
+
+export function toMap<T, U>(input: Iterable<[T, U]>) {
+  return new Map(input);
+}
+
 export function some<T>(fn: (item: T) => boolean) {
   return function (input: Iterable<T>) {
     for (const item of input) {
@@ -266,7 +278,16 @@ export function average(input: Iterable<number>) {
     sum += item;
     count++;
   }
+  if (count === 0) return 0;
   return sum / count;
+}
+
+export function count<T>(input: Iterable<T>) {
+  let count = 0;
+  for (const item of input) {
+    count++;
+  }
+  return count;
 }
 
 export function pipe<A, B>(input: A, fn: (input: A) => B): B;
