@@ -1,9 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { load, lines, map, reduce, pipe } from "../common";
+import { load, lines, map, reduce, pipe, split } from "../common";
 
 type Game = {
   id: number;
-  rounds: Array<{
+  rounds: Generator<{
     red: number;
     green: number;
     blue: number;
@@ -11,23 +11,26 @@ type Game = {
 };
 
 function max(game: Game) {
-  return game.rounds.reduce(
-    (maximum, round) => ({
-      red: Math.max(maximum.red, round.red),
-      green: Math.max(maximum.green, round.green),
-      blue: Math.max(maximum.blue, round.blue),
-    }),
-    { red: 0, green: 0, blue: 0 }
+  return pipe(
+    game.rounds,
+    reduce(
+      (maximum, round) => ({
+        red: Math.max(maximum.red, round.red),
+        green: Math.max(maximum.green, round.green),
+        blue: Math.max(maximum.blue, round.blue),
+      }),
+      { red: 0, green: 0, blue: 0 }
+    )
   );
 }
 
 function parseGame(line: string): Game {
   const gameIndex = line.indexOf(":");
   const id = +line.slice(5, gameIndex);
-  const rounds = line
-    .slice(gameIndex + 1)
-    .split(";")
-    .map((round) => {
+  const rounds = pipe(
+    line.slice(gameIndex + 1),
+    split(";"),
+    map((round) => {
       const colors = round.split(",");
       const red = colors.find((color) => color.includes("red"));
       const green = colors.find((color) => color.includes("green"));
@@ -37,7 +40,8 @@ function parseGame(line: string): Game {
         green: green ? +green.slice(0, green.indexOf("green")) : 0,
         blue: blue ? +blue.slice(0, blue.indexOf("blue")) : 0,
       };
-    });
+    })
+  );
   return { id, rounds };
 }
 
