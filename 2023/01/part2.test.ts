@@ -14,9 +14,7 @@ const ALPHADIGITSMAP = {
   eight: 8,
   nine: 9,
 };
-const ALPHADIGITS = Object.keys(
-  ALPHADIGITSMAP
-) as (keyof typeof ALPHADIGITSMAP)[];
+const ALPHADIGITS = Object.keys(ALPHADIGITSMAP) as (keyof typeof ALPHADIGITSMAP)[];
 const DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 function startWithAlphaDigit(line: string) {
@@ -45,14 +43,14 @@ function* extractNumbers(line: string) {
 function part2(input: string) {
   return pipe(
     lines(input),
-    map((line) =>
+    map(line =>
       pipe(
         extractNumbers(line),
         firstAndLast,
-        reduce((concat, n) => +`${concat}${n}`, 0)
-      )
+        reduce((concat, n) => +`${concat}${n}`, 0),
+      ),
     ),
-    reduce((sum, number) => sum + number, 0)
+    reduce((sum, number) => sum + number, 0),
   );
 }
 

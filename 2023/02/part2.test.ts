@@ -21,8 +21,8 @@ function max(game: Game) {
         green: Math.max(maximum.green, round.green),
         blue: Math.max(maximum.blue, round.blue),
       }),
-      { red: 0, green: 0, blue: 0 }
-    )
+      { red: 0, green: 0, blue: 0 },
+    ),
   );
 }
 
@@ -32,17 +32,17 @@ function parseGame(line: string): Game {
   const rounds = pipe(
     line.slice(gameIndex + 1),
     split(";"),
-    map((round) => {
+    map(round => {
       const colors = round.split(",");
-      const red = colors.find((color) => color.includes("red"));
-      const green = colors.find((color) => color.includes("green"));
-      const blue = colors.find((color) => color.includes("blue"));
+      const red = colors.find(color => color.includes("red"));
+      const green = colors.find(color => color.includes("green"));
+      const blue = colors.find(color => color.includes("blue"));
       return {
         red: red ? +red.slice(0, red.indexOf("red")) : 0,
         green: green ? +green.slice(0, green.indexOf("green")) : 0,
         blue: blue ? +blue.slice(0, blue.indexOf("blue")) : 0,
       };
-    })
+    }),
   );
   return { id, rounds };
 }
@@ -52,7 +52,7 @@ function part2(input: string) {
     lines(input),
     map(parseGame),
     map(max),
-    reduce((sum, round) => sum + round.blue * round.green * round.red, 0)
+    reduce((sum, round) => sum + round.blue * round.green * round.red, 0),
   );
 }
 

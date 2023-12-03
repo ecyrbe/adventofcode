@@ -21,12 +21,7 @@ type Game = {
 function isLegal(game: Game) {
   return pipe(
     game.rounds,
-    every(
-      (round) =>
-        round.red <= LEGAL.red &&
-        round.green <= LEGAL.green &&
-        round.blue <= LEGAL.blue
-    )
+    every(round => round.red <= LEGAL.red && round.green <= LEGAL.green && round.blue <= LEGAL.blue),
   );
 }
 
@@ -36,17 +31,17 @@ function parseGame(line: string): Game {
   const rounds = pipe(
     line.slice(gameIndex + 1),
     split(";"),
-    map((round) => {
+    map(round => {
       const colors = round.split(",");
-      const red = colors.find((color) => color.includes("red"));
-      const green = colors.find((color) => color.includes("green"));
-      const blue = colors.find((color) => color.includes("blue"));
+      const red = colors.find(color => color.includes("red"));
+      const green = colors.find(color => color.includes("green"));
+      const blue = colors.find(color => color.includes("blue"));
       return {
         red: red ? +red.slice(0, red.indexOf("red")) : 0,
         green: green ? +green.slice(0, green.indexOf("green")) : 0,
         blue: blue ? +blue.slice(0, blue.indexOf("blue")) : 0,
       };
-    })
+    }),
   );
   return { id, rounds };
 }
@@ -56,7 +51,7 @@ function part1(input: string) {
     lines(input),
     map(parseGame),
     filter(isLegal),
-    reduce((sum, game) => sum + game.id, 0)
+    reduce((sum, game) => sum + game.id, 0),
   );
 }
 

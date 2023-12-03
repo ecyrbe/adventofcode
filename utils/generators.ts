@@ -141,11 +141,7 @@ export function* zip<T, U>(input1: Iterable<T>, input2: Iterable<U>) {
   }
 }
 
-export function* zipWith<T, U, V>(
-  fn: (item1: T, item2: U) => V,
-  input1: Iterable<T>,
-  input2: Iterable<U>
-) {
+export function* zipWith<T, U, V>(fn: (item1: T, item2: U) => V, input1: Iterable<T>, input2: Iterable<U>) {
   for (const [item1, item2] of zip(input1, input2)) {
     yield fn(item1, item2);
   }
@@ -167,7 +163,7 @@ export function* flat<T>(input: Iterable<Iterable<T>>) {
   }
 }
 
-export function* flatMap<T, U>(fn: (item: T) => Iterable<U>) {
+export function flatMap<T, U>(fn: (item: T) => Iterable<U>) {
   return function* (input: Iterable<T>) {
     for (const item of input) {
       for (const inner of fn(item)) {

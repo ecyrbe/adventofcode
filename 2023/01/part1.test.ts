@@ -16,14 +16,14 @@ function* extractNumbers(line: string) {
 function part1(input: string) {
   return pipe(
     lines(input),
-    map((line) =>
+    map(line =>
       pipe(
         extractNumbers(line),
         firstAndLast,
-        reduce((concat, n) => +`${concat}${n}`, 0)
-      )
+        reduce((concat, n) => +`${concat}${n}`, 0),
+      ),
     ),
-    reduce((sum, number) => sum + number, 0)
+    reduce((sum, number) => sum + number, 0),
   );
 }
 
