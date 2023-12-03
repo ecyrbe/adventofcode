@@ -162,6 +162,17 @@ export function* zipWith<T, U, V>(fn: (item1: T, item2: U) => V, input1: Iterabl
   }
 }
 
+export function* cycle<T>(input: Iterable<T>) {
+  const items: T[] = [];
+  for (const item of input) {
+    items.push(item);
+    yield item;
+  }
+  while (true) {
+    yield* items;
+  }
+}
+
 export function* enumerate<T>(input: Iterable<T>) {
   let i = 0;
   for (const item of input) {
@@ -170,7 +181,7 @@ export function* enumerate<T>(input: Iterable<T>) {
   }
 }
 
-export function* flat<T>(input: Iterable<Iterable<T>>) {
+export function* flatten<T>(input: Iterable<Iterable<T>>) {
   for (const inner of input) {
     yield* inner;
   }
