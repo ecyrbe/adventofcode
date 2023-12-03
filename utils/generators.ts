@@ -40,6 +40,16 @@ export function map<T, U>(fn: (item: T) => U) {
   };
 }
 
+export function scan<T, U>(fn: (sum: U, item: T) => U, initial: U) {
+  return function* (input: Iterable<T>) {
+    let sum = initial;
+    for (const item of input) {
+      sum = fn(sum, item);
+      yield sum;
+    }
+  };
+}
+
 export function take<T>(count: number) {
   return function* (input: Iterable<T>) {
     let i = 0;
@@ -51,12 +61,31 @@ export function take<T>(count: number) {
   };
 }
 
+export function takeWhile<T>(fn: (item: T) => boolean) {
+  return function* (input: Iterable<T>) {
+    for (const item of input) {
+      if (!fn(item)) return;
+      yield item;
+    }
+  };
+}
+
 export function drop<T>(count: number) {
   return function* (input: Iterable<T>) {
     let i = 0;
     for (const item of input) {
       if (i >= count) yield item;
       i++;
+    }
+  };
+}
+
+export function dropWhile<T>(fn: (item: T) => boolean) {
+  return function* (input: Iterable<T>) {
+    let dropping = true;
+    for (const item of input) {
+      if (dropping && !fn(item)) dropping = false;
+      if (!dropping) yield item;
     }
   };
 }
@@ -109,6 +138,16 @@ export function* zip<T, U>(input1: Iterable<T>, input2: Iterable<U>) {
     const result2 = iterator2.next();
     if (result1.done || result2.done) return;
     yield [result1.value, result2.value] as [T, U];
+  }
+}
+
+export function* zipWith<T, U, V>(
+  fn: (item1: T, item2: U) => V,
+  input1: Iterable<T>,
+  input2: Iterable<U>
+) {
+  for (const [item1, item2] of zip(input1, input2)) {
+    yield fn(item1, item2);
   }
 }
 
