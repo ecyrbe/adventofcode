@@ -1,3 +1,9 @@
+/**
+ * This files contains reducers. Reducers are functions that take an iterable and return a single value.
+ * They consume an iterable, so they are usually used as the last function in a pipe.
+ * Note that infinite iterables will cause infinite loops. Only use reducers on finite iterables.
+ */
+
 export function reduce<T, U>(fn: (sum: U, item: T) => U, initial: U) {
   return function (input: Iterable<T>) {
     let sum = initial;
@@ -95,6 +101,14 @@ export function sum(input: Iterable<number>) {
   return sum;
 }
 
+export function product(input: Iterable<number>) {
+  let product = 1;
+  for (const item of input) {
+    product *= item;
+  }
+  return product;
+}
+
 export function average(input: Iterable<number>) {
   let sum = 0;
   let count = 0;
@@ -112,6 +126,31 @@ export function count<T>(input: Iterable<T>) {
     count++;
   }
   return count;
+}
+
+export function unzip<T, U>(input: Iterable<[T, U]>) {
+  const output1: T[] = [];
+  const output2: U[] = [];
+  for (const [item1, item2] of input) {
+    output1.push(item1);
+    output2.push(item2);
+  }
+  return [output1, output2] as [Iterable<T>, Iterable<U>];
+}
+
+export function partition<T>(fn: (item: T) => boolean) {
+  return function (input: Iterable<T>) {
+    const trueValues: T[] = [];
+    const falseValues: T[] = [];
+    for (const item of input) {
+      if (fn(item)) {
+        trueValues.push(item);
+      } else {
+        falseValues.push(item);
+      }
+    }
+    return [trueValues, falseValues] as [Iterable<T>, Iterable<T>];
+  };
 }
 
 export function collect<T>(input: Iterable<T>) {
