@@ -40,6 +40,17 @@ export function map<T, U>(fn: (item: T) => U) {
   };
 }
 
+export function filterMap<T, U>(fn: (item: T) => U | undefined) {
+  return function* (input: Iterable<T>) {
+    for (const item of input) {
+      const mapped = fn(item);
+      if (mapped !== undefined) {
+        yield mapped;
+      }
+    }
+  };
+}
+
 export function scan<T, U>(fn: (sum: U, item: T) => U, initial: U) {
   return function* (input: Iterable<T>) {
     let sum = initial;
