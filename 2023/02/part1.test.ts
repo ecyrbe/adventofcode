@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { split, lines, load, map, filter } from "@utils/generators";
-import { reduce, every } from "@utils/reducers";
+import { every, sum } from "@utils/reducers";
 import { pipe } from "@utils/pipe";
 
 const LEGAL = {
@@ -51,7 +51,8 @@ function part1(input: string) {
     lines(input),
     map(parseGame),
     filter(isLegal),
-    reduce((sum, game) => sum + game.id, 0),
+    map(game => game.id),
+    sum,
   );
 }
 

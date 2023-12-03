@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { split, lines, load, map } from "@utils/generators";
-import { reduce } from "@utils/reducers";
+import { reduce, sum } from "@utils/reducers";
 import { pipe } from "@utils/pipe";
 
 type Game = {
@@ -52,7 +52,8 @@ function part2(input: string) {
     lines(input),
     map(parseGame),
     map(max),
-    reduce((sum, round) => sum + round.blue * round.green * round.red, 0),
+    map(round => round.red * round.green * round.blue),
+    sum,
   );
 }
 

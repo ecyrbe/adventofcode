@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { firstAndLast, lines, load, map } from "@utils/generators";
-import { reduce } from "@utils/reducers";
+import { reduce, sum } from "@utils/reducers";
 import { pipe } from "@utils/pipe";
 
 const ALPHADIGITSMAP = {
@@ -50,7 +50,7 @@ function part2(input: string) {
         reduce((concat, n) => +`${concat}${n}`, 0),
       ),
     ),
-    reduce((sum, number) => sum + number, 0),
+    sum,
   );
 }
 

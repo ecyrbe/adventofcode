@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { concat, drop, flatMap, lines, load, map, scan, tap } from "@utils/generators";
 import { pipe } from "@utils/pipe";
-import { reduce, toArray } from "@utils/reducers";
+import { sum, toArray } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;
 
@@ -63,7 +63,7 @@ function part2(input: string) {
     scan(iterate, { up: "", current: "", down: "" }),
     drop(1),
     flatMap(findGearRatios),
-    reduce((sum, item) => sum + item, 0),
+    sum,
   );
 }
 

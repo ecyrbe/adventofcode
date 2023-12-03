@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { drop, flatMap, lines, load, scan } from "@utils/generators";
 import { pipe } from "@utils/pipe";
-import { reduce } from "@utils/reducers";
+import { sum } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;
 const NOPARTS_REGEX = /^\.+$/;
@@ -45,7 +45,7 @@ function part1(input: string) {
     scan(iterate, { prev: "", current: "", next: "" }),
     drop(1),
     flatMap(findEngineParts),
-    reduce((sum, item) => sum + item, 0),
+    sum,
   );
 }
 
