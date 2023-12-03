@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { concat, drop, flatMap, lines, load, map, scan, tap } from "@utils/generators";
 import { pipe } from "@utils/pipe";
-import { sum, toArray } from "@utils/reducers";
+import { sum, collect } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;
 
@@ -41,7 +41,7 @@ function* findGearRatio(iter: Iterator, potentialGearIndex: number) {
       matchRatio(iter.up, potentialGearIndex, isAdjacentUpDown),
       matchRatio(iter.down, potentialGearIndex, isAdjacentUpDown),
     ),
-    toArray,
+    collect,
   );
   if (potentialGears.length === 2) {
     yield potentialGears.reduce((product, item) => product * item, 1);

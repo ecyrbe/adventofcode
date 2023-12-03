@@ -114,14 +114,14 @@ export function count<T>(input: Iterable<T>) {
   return count;
 }
 
-export function toArray<T>(input: Iterable<T>) {
+export function collect<T>(input: Iterable<T>) {
   return [...input];
 }
 
-export function toSet<T>(input: Iterable<T>) {
+export function collectSet<T>(input: Iterable<T>) {
   return new Set(input);
 }
 
-export function toMap<T, U>(input: Iterable<[T, U]>) {
+export function collectMap<T, U>(input: Iterable<[T, U]>) {
   return new Map(input);
 }
