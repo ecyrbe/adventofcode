@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { concat, drop, filter, flatMap, lines, load, map, scan, tap } from "@utils/generators";
+import { concat, drop, filter, flatMap, lines, load, map, scan, tap, log } from "@utils/generators";
 import { pipe } from "@utils/pipe";
 import { sum, collect } from "@utils/reducers";
 

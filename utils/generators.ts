@@ -110,6 +110,10 @@ export function tap<T>(fn: (item: T) => void) {
   };
 }
 
+export function log<T>(label?: string) {
+  return tap<T>(item => (label ? console.log(label, item) : console.log(item)));
+}
+
 export function* range(start: number, end: number) {
   for (let i = start; i <= end; i++) {
     yield i;
