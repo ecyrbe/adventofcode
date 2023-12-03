@@ -157,18 +157,14 @@ export function* enumerate<T>(input: Iterable<T>) {
 
 export function* flat<T>(input: Iterable<Iterable<T>>) {
   for (const inner of input) {
-    for (const item of inner) {
-      yield item;
-    }
+    yield* inner;
   }
 }
 
 export function flatMap<T, U>(fn: (item: T) => Iterable<U>) {
   return function* (input: Iterable<T>) {
     for (const item of input) {
-      for (const inner of fn(item)) {
-        yield inner;
-      }
+      yield* fn(item);
     }
   };
 }
