@@ -62,7 +62,7 @@ function part2(input: string) {
     flatMap(iter =>
       pipe(
         findGearRatios(iter),
-        filter(ratios => ratios.length === 2),
+        filter((ratios): ratios is [number, number] => ratios.length === 2),
         map(ratios => ratios[0] * ratios[1]),
       ),
     ),

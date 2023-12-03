@@ -22,8 +22,10 @@ export function* lines(input: string) {
   yield* pipe(input, split("\n"));
 }
 
-export function filter<T>(fn: (item: T) => boolean) {
-  return function* (input: Iterable<T>) {
+export function filter<T, S extends T>(fn: (item: T) => item is S): (input: Iterable<T>) => Generator<S>;
+export function filter<T>(fn: (item: T) => boolean): (input: Iterable<T>) => Generator<T>;
+export function filter(fn: (item: any) => boolean) {
+  return function* (input: Iterable<any>) {
     for (const item of input) {
       if (fn(item)) {
         yield item;
