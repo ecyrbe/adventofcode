@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { concat, drop, flatMap, lines, load, map, scan, tap } from "@utils/generators";
+import { concat, drop, filter, flatMap, lines, load, map, scan, tap } from "@utils/generators";
 import { pipe } from "@utils/pipe";
 import { sum, collect } from "@utils/reducers";
 
@@ -34,8 +34,8 @@ function* matchRatio(str: string, index: number, predicate: MatchPredicate) {
   }
 }
 
-function* findGearRatio(iter: Iterator, potentialGearIndex: number) {
-  const potentialGears = pipe(
+function findGearRatio(iter: Iterator, potentialGearIndex: number) {
+  return pipe(
     concat(
       matchRatio(iter.current, potentialGearIndex, isAdjacentLeftRight),
       matchRatio(iter.up, potentialGearIndex, isAdjacentUpDown),
@@ -43,15 +43,12 @@ function* findGearRatio(iter: Iterator, potentialGearIndex: number) {
     ),
     collect,
   );
-  if (potentialGears.length === 2) {
-    yield potentialGears.reduce((product, item) => product * item, 1);
-  }
 }
 
 function* findGearRatios(iter: Iterator) {
   let potentialGearIndex = iter.current.indexOf("*");
   while (potentialGearIndex !== -1) {
-    yield* findGearRatio(iter, potentialGearIndex);
+    yield findGearRatio(iter, potentialGearIndex);
     potentialGearIndex = iter.current.indexOf("*", potentialGearIndex + 1);
   }
 }
@@ -62,7 +59,13 @@ function part2(input: string) {
     lines,
     scan(iterate, { up: "", current: "", down: "" }),
     drop(1),
-    flatMap(findGearRatios),
+    flatMap(iter =>
+      pipe(
+        findGearRatios(iter),
+        filter(ratios => ratios.length === 2),
+        map(ratios => ratios[0] * ratios[1]),
+      ),
+    ),
     sum,
   );
 }
