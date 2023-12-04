@@ -47,7 +47,7 @@ function part2(input: string) {
       pipe(
         extractNumbers(line),
         firstAndLast,
-        reduce((concat, n) => +`${concat}${n}`, 0),
+        reduce((concat, n) => 10 * concat + n, 0),
       ),
     ),
     sum,
