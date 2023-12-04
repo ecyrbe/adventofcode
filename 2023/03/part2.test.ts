@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { concat, drop, filter, flatMap, lines, load, map, scan, tap, log } from "@utils/generators";
+import { concat, drop, filter, flatMap, lines, load, map, scan, tap, log, appendOne } from "@utils/generators";
 import { pipe } from "@utils/pipe";
 import { sum, collect } from "@utils/reducers";
 
@@ -55,8 +55,9 @@ function* findGearRatios(iter: Iterator) {
 
 function part2(input: string) {
   return pipe(
-    input + `\n`,
+    input,
     lines,
+    appendOne(""),
     scan(iterate, { up: "", current: "", down: "" }),
     drop(1),
     flatMap(iter =>

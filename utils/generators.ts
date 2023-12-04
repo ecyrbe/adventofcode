@@ -147,6 +147,34 @@ export function* concat<T>(...inputs: Iterable<T>[]) {
   }
 }
 
+export function append<T>(other: Iterable<T>) {
+  return function* (input: Iterable<T>) {
+    yield* input;
+    yield* other;
+  };
+}
+
+export function appendOne<T>(item: T) {
+  return function* (input: Iterable<T>) {
+    yield* input;
+    yield item;
+  };
+}
+
+export function prepend<T>(other: Iterable<T>) {
+  return function* (input: Iterable<T>) {
+    yield* other;
+    yield* input;
+  };
+}
+
+export function prependOne<T>(item: T) {
+  return function* (input: Iterable<T>) {
+    yield item;
+    yield* input;
+  };
+}
+
 export function* zip<T, U>(input1: Iterable<T>, input2: Iterable<U>) {
   const iterator1 = input1[Symbol.iterator]();
   const iterator2 = input2[Symbol.iterator]();

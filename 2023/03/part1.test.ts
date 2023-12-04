@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { drop, flatMap, lines, load, scan } from "@utils/generators";
+import { append, appendOne, drop, flatMap, lines, load, scan } from "@utils/generators";
 import { pipe } from "@utils/pipe";
 import { sum } from "@utils/reducers";
 
@@ -40,8 +40,9 @@ function* findEngineParts(iter: Iterator) {
 
 function part1(input: string) {
   return pipe(
-    input + `\n`,
+    input,
     lines,
+    appendOne(""),
     scan(iterate, { prev: "", current: "", next: "" }),
     drop(1),
     flatMap(findEngineParts),
