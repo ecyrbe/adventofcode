@@ -1,19 +1,21 @@
 import { describe, it, expect } from "vitest";
-import { concat, drop, filter, flatMap, lines, load, map, scan, tap, log, appendOne } from "@utils/generators";
+import { concat, drop, filter, flatMap, lines, load, map, scan, tap, log, appendOne, from } from "@utils/generators";
 import { pipe } from "@utils/pipe";
-import { sum, collect } from "@utils/reducers";
+import { sum, collect, product } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;
 
 type Iterator = { up: string; current: string; down: string };
 type MatchPredicate = (index: number, start: number, end: number) => boolean;
 
-function iterate(iter: Iterator, item: string) {
+function iterate(iter: Iterator, item: string): Iterator {
   const up = iter.current;
   const current = iter.down;
   const down = item;
   return { up, current, down };
 }
+
+const emptyIterator: Iterator = { up: "", current: "", down: "" };
 
 function isAdjacentLeftRight(index: number, start: number, end: number) {
   return index + 1 === start || index === end;
@@ -58,13 +60,13 @@ function part2(input: string) {
     input,
     lines,
     appendOne(""),
-    scan(iterate, { up: "", current: "", down: "" }),
+    scan(iterate, emptyIterator),
     drop(1),
     flatMap(iter =>
       pipe(
         findGearRatios(iter),
-        filter((ratios): ratios is [number, number] => ratios.length === 2),
-        map(ratios => ratios[0] * ratios[1]),
+        filter(ratios => ratios.length === 2),
+        map(product),
       ),
     ),
     sum,
