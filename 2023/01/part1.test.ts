@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { filter, firstAndLast, from, lines, load, map } from "@utils/generators";
+import { filter, firstAndLast, lines, load, map } from "@utils/generators";
 import { reduce, sum } from "@utils/reducers";
 import { pipe } from "@utils/pipe";
 
@@ -10,7 +10,7 @@ function part1(input: string) {
     lines(input),
     map(line =>
       pipe(
-        from(line),
+        line,
         filter(char => DIGITS.includes(char)),
         firstAndLast,
         map(n => +n),
