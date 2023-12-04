@@ -14,6 +14,20 @@ export function reduce<T, U>(fn: (sum: U, item: T) => U, initial: U) {
   };
 }
 
+export function fold<T>(fn: (sum: T, item: T) => T) {
+  return function (input: Iterable<T>) {
+    let sum: T | undefined;
+    for (const item of input) {
+      if (sum === undefined) {
+        sum = item;
+      } else {
+        sum = fn(sum, item);
+      }
+    }
+    return sum;
+  };
+}
+
 export function join(separator: string) {
   return function (input: Iterable<string>) {
     let result = "";
