@@ -24,6 +24,13 @@ export function join(separator: string) {
   };
 }
 
+export function* reverse<T>(input: Iterable<T>) {
+  const items = [...input];
+  for (let i = items.length - 1; i >= 0; i--) {
+    yield items[i];
+  }
+}
+
 export function first<T>(input: Iterable<T>) {
   for (const item of input) {
     return item;
