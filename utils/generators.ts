@@ -66,6 +66,14 @@ export function filterMap<T, U>(fn: (item: T) => U | undefined) {
   };
 }
 
+export function pluck<T, K extends keyof T>(key: K) {
+  return function* (input: Iterable<T>) {
+    for (const item of input) {
+      yield item[key];
+    }
+  };
+}
+
 export function scan<T, U>(fn: (sum: U, item: T) => U, initial: U) {
   return function* (input: Iterable<T>) {
     let sum = initial;
