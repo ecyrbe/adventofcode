@@ -8,17 +8,22 @@ export function load(dir: string) {
 
 export function split(separator: string | RegExp) {
   return function* (input: string) {
+    let start = 0;
     if (typeof separator === "string") {
       let index = input.indexOf(separator);
       while (index !== -1) {
-        yield input.slice(0, index);
-        input = input.slice(index + separator.length);
-        index = input.indexOf(separator);
+        yield input.slice(start, index);
+        start = index + separator.length;
+        index = input.indexOf(separator, start);
       }
-      yield input;
     } else {
-      yield* input.split(separator);
+      const match = input.matchAll(separator);
+      for (const m of match) {
+        yield input.slice(start, m.index);
+        start = m.index! + m[0].length;
+      }
     }
+    yield input.slice(start);
   };
 }
 
