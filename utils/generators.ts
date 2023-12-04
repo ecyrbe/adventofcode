@@ -6,15 +6,19 @@ export function load(dir: string) {
   return fs.readFileSync(path.join(dir, "./input.txt"), "utf-8");
 }
 
-export function split(separator: string) {
+export function split(separator: string | RegExp) {
   return function* (input: string) {
-    let index = input.indexOf(separator);
-    while (index !== -1) {
-      yield input.slice(0, index);
-      input = input.slice(index + separator.length);
-      index = input.indexOf(separator);
+    if (typeof separator === "string") {
+      let index = input.indexOf(separator);
+      while (index !== -1) {
+        yield input.slice(0, index);
+        input = input.slice(index + separator.length);
+        index = input.indexOf(separator);
+      }
+      yield input;
+    } else {
+      yield* input.split(separator);
     }
-    yield input;
   };
 }
 
