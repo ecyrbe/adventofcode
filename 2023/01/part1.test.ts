@@ -1,21 +1,18 @@
 import { describe, it, expect } from "vitest";
 import { filter, firstAndLast, lines, load, map } from "@utils/generators";
 import { reduce, sum } from "@utils/reducers";
-import { pipe } from "@utils/pipe";
+import { mapFlow, pipe } from "@utils/pipe";
 
 const DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"];
 
 function part1(input: string) {
   return pipe(
     lines(input),
-    map(line =>
-      pipe(
-        line,
-        filter(char => DIGITS.includes(char)),
-        firstAndLast,
-        map(n => +n),
-        reduce((concat, n) => 10 * concat + n, 0),
-      ),
+    mapFlow(
+      filter(char => DIGITS.includes(char)),
+      firstAndLast,
+      map(n => +n),
+      reduce((concat, n) => 10 * concat + n, 0),
     ),
     sum,
   );

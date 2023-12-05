@@ -1,6 +1,6 @@
-import { drop, enumerate, filter, flatMap, lines, load, log, map, split } from "@utils/generators";
-import { pipe } from "@utils/pipe";
-import { collect, collectSet, fold, join, reduce, sum } from "@utils/reducers";
+import { drop, filter, lines, load, map, split } from "@utils/generators";
+import { mapFlow, pipe } from "@utils/pipe";
+import { collectSet, fold, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
 const CARD_REGEX = /[:|]/g;
@@ -15,24 +15,18 @@ function intersect<T>(a: Set<T>, b: Set<T>) {
 function part1(input: string) {
   return pipe(
     lines(input),
-    map(line =>
-      pipe(
-        line,
-        split(CARD_REGEX),
-        drop(1),
-        map(part =>
-          pipe(
-            part,
-            matchAll(NUMBER_REGEX),
-            map(match => +match[0]),
-            collectSet,
-          ),
-        ),
-        fold(intersect),
+    mapFlow(
+      split(CARD_REGEX),
+      drop(1),
+      mapFlow(
+        matchAll(NUMBER_REGEX),
+        map(match => +match[0]),
+        collectSet,
       ),
+      fold(intersect),
     ),
-    filter(set => set!.size > 0),
-    map(set => 2 ** (set!.size - 1)),
+    filter((set): set is Set<number> => !!set && set.size > 0),
+    map(set => 2 ** (set.size - 1)),
     sum,
   );
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { firstAndLast, lines, load, map } from "@utils/generators";
 import { reduce, sum } from "@utils/reducers";
-import { pipe } from "@utils/pipe";
+import { mapFlow, pipe } from "@utils/pipe";
 
 const ALPHADIGITSMAP = {
   one: 1,
@@ -43,12 +43,10 @@ function* extractNumbers(line: string) {
 function part2(input: string) {
   return pipe(
     lines(input),
-    map(line =>
-      pipe(
-        extractNumbers(line),
-        firstAndLast,
-        reduce((concat, n) => 10 * concat + n, 0),
-      ),
+    mapFlow(
+      extractNumbers,
+      firstAndLast,
+      reduce((concat, n) => 10 * concat + n, 0),
     ),
     sum,
   );
