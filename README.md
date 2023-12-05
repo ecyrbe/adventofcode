@@ -11,3 +11,9 @@ Here are the tools for helping using Generators : [Generator helpers](utils)
 - Day 2
   - [Part 1](2023/02/part1.test.ts)
   - [Part 2](2023/02/part2.test.ts)
+- Day 3
+  - [Part 1](2023/03/part1.test.ts)
+  - [Part 2](2023/03/part2.test.ts)
+- Day 4
+  - [Part 1](2023/04/part1.test.ts)
+  - [Part 2](2023/04/part2.test.ts)
