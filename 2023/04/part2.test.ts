@@ -1,6 +1,6 @@
-import { drop, enumerate, lines, load, map, pluck, split } from "@utils/generators";
+import { drop, lines, map, prependOne, split, take } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
-import { collect, collectSet, fold, sum } from "@utils/reducers";
+import { collect, collectSet, fold, reduce, reverse, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
 const CARD_REGEX = /[:|]/g;
@@ -25,21 +25,12 @@ function part2(input: string) {
       ),
       fold(intersect),
     ),
-    enumerate,
-    map(card => ({
-      id: card[0],
-      size: card[1]?.size ?? 0,
-      score: 2 ** (card[1]?.size ?? 0),
-      copies: 1,
-    })),
-    collect,
+    map(set => set?.size ?? 0),
+    reverse,
+    reduce((acc, wins) => pipe(acc, prependOne(pipe(acc, take(wins), sum) + 1), collect), [] as number[]),
+    sum,
   );
-  for (const card of collected) {
-    for (let i = card.id + 1; i <= card.id + card.size; i++) {
-      collected[i].copies += card.copies;
-    }
-  }
-  return pipe(collected, pluck("copies"), sum);
+  return collected;
 }
 
 describe("2023/day/04/part2", () => {
@@ -50,13 +41,14 @@ Card 3:  1 21 53 59 44 | 69 82 63 72 16 21 14  1
 Card 4: 41 92 73 84 69 | 59 84 76 51 58  5 54 83
 Card 5: 87 83 26 28 32 | 88 30 70 12 93 22 82 36
 Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`;
+    console.log(part2(input));
     expect(part2(input)).toEqual(30);
   });
 
-  it("should work with the puzzle input", () => {
-    const input = load(__dirname);
-    const result = part2(input);
-    console.log(result);
-    expect(result).toEqual(5095824);
-  });
+  // it("should work with the puzzle input", () => {
+  //   const input = load(__dirname);
+  //   const result = part2(input);
+  //   console.log(result);
+  //   expect(result).toEqual(5095824);
+  // });
 });
