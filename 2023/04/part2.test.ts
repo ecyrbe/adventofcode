@@ -13,7 +13,7 @@ function intersect<T>(a: Set<T>, b: Set<T>) {
 }
 
 function part2(input: string) {
-  const collected = pipe(
+  return pipe(
     lines(input),
     mapFlow(
       split(CARD_REGEX),
@@ -30,7 +30,6 @@ function part2(input: string) {
     reduce((acc, wins) => pipe(acc, prependOne(pipe(acc, take(wins), sum) + 1), collect), [] as number[]),
     sum,
   );
-  return collected;
 }
 
 describe("2023/day/04/part2", () => {
