@@ -3,23 +3,6 @@ import { mapFlow, pipe } from "@utils/pipe";
 import { collect, find, min, reduce } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
-const MAPPINGS = {
-  SEED: 0,
-  SOIL: 1,
-  FERTILIZER: 2,
-  WATER: 3,
-  LIGHT: 4,
-  TEMPERATURE: 5,
-  HUMIDITY: 6,
-  LOCATION: 7,
-};
-
-const MAPPING = {
-  SOURCE: 0,
-  TARGET: 1,
-  COUNT: 2,
-};
-
 type SeedsMapping = {
   seeds: number[];
   mappings: number[][][];
@@ -38,7 +21,7 @@ function parseMapping(input: string) {
     reduce(
       (seedsMapping, [index, value]) => {
         switch (index) {
-          case MAPPINGS.SEED:
+          case 0:
             seedsMapping.seeds = pipe(
               value,
               matchAll(NUMBER_REGEX),
