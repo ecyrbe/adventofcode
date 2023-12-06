@@ -1,4 +1,4 @@
-import { drop, lines, map, prependOne, split, take } from "@utils/generators";
+import { drop, lines, load, map, prependOne, split, take } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
 import { collect, collectSet, fold, reduce, reverse, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
@@ -27,7 +27,7 @@ function part2(input: string) {
     ),
     map(set => set?.size ?? 0),
     reverse,
-    reduce((acc, wins) => pipe(acc, prependOne(pipe(acc, take(wins), sum) + 1), collect), [] as number[]),
+    reduce((acc, wins) => [pipe(acc, take(wins), sum) + 1, ...acc], [] as number[]),
     sum,
   );
 }
@@ -44,10 +44,10 @@ Card 6: 31 18 13 56 72 | 74 77 10 23 35 67 36 11`;
     expect(part2(input)).toEqual(30);
   });
 
-  // it("should work with the puzzle input", () => {
-  //   const input = load(__dirname);
-  //   const result = part2(input);
-  //   console.log(result);
-  //   expect(result).toEqual(5095824);
-  // });
+  it("should work with the puzzle input", () => {
+    const input = load(__dirname);
+    const result = part2(input);
+    console.log(result);
+    expect(result).toEqual(5095824);
+  });
 });
