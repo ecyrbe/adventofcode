@@ -1,6 +1,6 @@
-import { lines, load, log, map, zip, zipAll } from "@utils/generators";
+import { lines, load, map, zipAll } from "@utils/generators";
 import { pipe, mapFlow } from "@utils/pipe";
-import { collect, product } from "@utils/reducers";
+import { product } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
 const NUMBER_REGEX = /(\d+)/g;
