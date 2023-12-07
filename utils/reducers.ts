@@ -38,11 +38,14 @@ export function join(separator: string) {
   };
 }
 
+export function sort<T>(compareFn: (a: T, b: T) => number) {
+  return function* (input: Iterable<T>) {
+    yield* [...input].sort(compareFn);
+  };
+}
+
 export function* reverse<T>(input: Iterable<T>) {
-  const items = [...input];
-  for (let i = items.length - 1; i >= 0; i--) {
-    yield items[i];
-  }
+  yield* [...input].reverse();
 }
 
 export function first<T>(input: Iterable<T>) {

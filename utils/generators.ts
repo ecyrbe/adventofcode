@@ -263,26 +263,30 @@ export function* duplicate<T>(input: Iterable<T>) {
   }
 }
 
-export function* chunk<T>(input: Iterable<T>, size: number) {
-  let chunk: T[] = [];
-  for (const item of input) {
-    chunk.push(item);
-    if (chunk.length === size) {
-      yield chunk;
-      chunk = [];
+export function chunk<T>(size: number) {
+  return function* (input: Iterable<T>) {
+    let chunk: T[] = [];
+    for (const item of input) {
+      chunk.push(item);
+      if (chunk.length === size) {
+        yield chunk;
+        chunk = [];
+      }
     }
-  }
-  if (chunk.length > 0) yield chunk;
+    if (chunk.length > 0) yield chunk;
+  };
 }
 
-export function* chunkBy<T>(input: Iterable<T>, fn: (item: T) => boolean) {
-  let chunk: T[] = [];
-  for (const item of input) {
-    if (fn(item)) {
-      yield chunk;
-      chunk = [];
+export function chunkBy<T>(fn: (item: T) => boolean) {
+  return function* (input: Iterable<T>) {
+    let chunk: T[] = [];
+    for (const item of input) {
+      if (fn(item)) {
+        yield chunk;
+        chunk = [];
+      }
+      chunk.push(item);
     }
-    chunk.push(item);
-  }
-  if (chunk.length > 0) yield chunk;
+    if (chunk.length > 0) yield chunk;
+  };
 }
