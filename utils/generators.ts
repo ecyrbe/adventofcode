@@ -213,6 +213,15 @@ export function* zipWith<T, U, V>(fn: (item1: T, item2: U) => V, input1: Iterabl
   }
 }
 
+export function* zipAll<T>(input: Iterable<Iterable<T>>) {
+  const iterators = [...input].map(i => i[Symbol.iterator]());
+  while (true) {
+    const results = iterators.map(i => i.next());
+    if (results.some(r => r.done)) return;
+    yield results.map(r => r.value) as T[];
+  }
+}
+
 export function* cycle<T>(input: Iterable<T>) {
   const items: T[] = [];
   for (const item of input) {
