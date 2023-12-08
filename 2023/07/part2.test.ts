@@ -1,9 +1,9 @@
-import { enumerate, filter, lines, load, log, map, split } from "@utils/generators";
+import { enumerate, filter, lines, load, log, map } from "@utils/generators";
 import { pipe } from "@utils/pipe";
-import { collect, collectSet, reduce, sort, sum } from "@utils/reducers";
+import { collect, reduce, sort, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
-const cards = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"] as const;
+const cards = ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"] as const;
 type Card = (typeof cards)[number];
 type Hand = {
   hand: string;
@@ -22,6 +22,24 @@ function kind(hand: string) {
       },
       {} as Record<Card, number>,
     ),
+    kind => {
+      if (kind["J"] > 0) {
+        let maxCard: Card | undefined = undefined;
+        for (const card of cards) {
+          if (card === "J") continue;
+          if (!maxCard && kind[card] > 0) {
+            maxCard = card;
+          } else if (maxCard && kind[card] > kind[maxCard]) {
+            maxCard = card;
+          }
+        }
+        if (maxCard) {
+          kind[maxCard] += kind["J"];
+          kind["J"] = 0;
+        }
+      }
+      return kind;
+    },
     obj => Object.values(obj),
     filter(count => count > 1),
     sort((a, b) => b - a),
@@ -30,7 +48,7 @@ function kind(hand: string) {
 }
 
 function orderedHand(hand: string) {
-  return hand.replace(/A/g, "Z").replace(/K/g, "Y").replace(/Q/g, "X").replace(/J/g, "W").replace(/T/g, "V");
+  return hand.replace(/A/g, "Z").replace(/K/g, "Y").replace(/Q/g, "X").replace(/J/g, "1").replace(/T/g, "V");
 }
 
 function compareHands(hand1: Hand, hand2: Hand) {
@@ -76,15 +94,18 @@ function parse(input: string) {
     lines,
     map(line => line.split(" ")),
     map(([hand, bid]) => ({ hand, kind: kind(hand), order: orderedHand(hand), bid: +bid })),
+  );
+}
+
+function part1(input: string) {
+  const hands = parse(input);
+  return pipe(
+    hands,
     sort(compareHands),
     enumerate,
     map(([index, hand]) => hand.bid * (index + 1)),
     sum,
   );
-}
-
-function part1(input: string) {
-  return parse(input);
 }
 
 describe("2023/day/05/part1", () => {
@@ -96,13 +117,13 @@ KTJJT 220
 QQQJA 483`;
     const result = part1(input);
     console.log(result);
-    expect(result).toEqual(6440);
+    expect(result).toEqual(5905);
   });
 
   it("should work with the puzzle input", () => {
     const input = load(__dirname);
     const result = part1(input);
     console.log(result);
-    expect(result).toEqual(253638586);
+    expect(result).toEqual(253253225);
   });
 });
