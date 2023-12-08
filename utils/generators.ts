@@ -223,13 +223,19 @@ export function* zipAll<T>(input: Iterable<Iterable<T>>) {
 }
 
 export function* cycle<T>(input: Iterable<T>) {
-  const items: T[] = [];
-  for (const item of input) {
-    items.push(item);
-    yield item;
-  }
-  while (true) {
-    yield* items;
+  if (Array.isArray(input)) {
+    while (true) {
+      yield* input as Iterable<T>;
+    }
+  } else {
+    const items: T[] = [];
+    for (const item of input) {
+      items.push(item);
+      yield item;
+    }
+    while (true) {
+      yield* items;
+    }
   }
 }
 
