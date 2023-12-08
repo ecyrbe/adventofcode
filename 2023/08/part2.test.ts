@@ -1,7 +1,7 @@
-import { cycle, filter, from, lines, load, map, scan, split, takeWhile } from "@utils/generators";
+import { cycle, filter, from, lines, load, map, scan, takeWhile } from "@utils/generators";
 import { describe, it, expect } from "vitest";
 import { mapFlow, pipe } from "@utils/pipe";
-import { collect, count, every, reduce } from "@utils/reducers";
+import { collect, count, fold, reduce } from "@utils/reducers";
 
 const LETTERS_REGEX = /([A-Z]+)/g;
 
@@ -76,7 +76,7 @@ function part2(input: string) {
     desertMap.paths,
     pathsEndingWithA,
     map(path => traverseDesertMap(desertMap, path)),
-    reduce(lcm, 1),
+    fold(lcm),
   );
 }
 
