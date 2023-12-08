@@ -17,3 +17,15 @@ Here are the tools for helping using Generators : [Generator helpers](utils)
 - Day 4
   - [Part 1](2023/04/part1.test.ts)
   - [Part 2](2023/04/part2.test.ts)
+- Day 5
+  - [Part 1](2023/05/part1.test.ts)
+  - [Part 2](2023/05/part2.test.ts)
+- Day 6
+  - [Part 1](2023/06/part1.test.ts)
+  - [Part 2](2023/06/part2.test.ts)
+- Day 7
+  - [Part 1](2023/07/part1.test.ts)
+  - [Part 2](2023/07/part2.test.ts)
+- Day 8
+  - [Part 1](2023/08/part1.test.ts)
+  - [Part 2](2023/08/part2.test.ts)
