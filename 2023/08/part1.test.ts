@@ -5,7 +5,8 @@ import { collect, count, reduce } from "@utils/reducers";
 
 const LETTERS_REGEX = /([A-Z]+)/g;
 
-type Nodes = Record<string, { L: string; R: string }>;
+type Paths = Record<string, { L: string; R: string }>;
+type Directions = keyof Paths[string];
 
 const matchAll = (regex: RegExp) => (input: string) => input.matchAll(regex);
 
@@ -20,39 +21,39 @@ function parse(input: string) {
     ),
     filter(items => items.length > 0),
     reduce(
-      (model, array) => {
-        if (model.instructions.length === 0) {
-          model.instructions = pipe(from(array[0]), collect) as ("L" | "R")[];
-          return model;
+      (desertMap, array) => {
+        if (desertMap.directions.length === 0) {
+          desertMap.directions = pipe(from(array[0]), collect) as Directions[];
+          return desertMap;
         }
-        const [name, L, R] = array;
-        model.nodes[name] = { L, R };
-        return model;
+        const [path, L, R] = array;
+        desertMap.paths[path] = { L, R };
+        return desertMap;
       },
-      { instructions: [], nodes: {} } as {
-        instructions: ("L" | "R")[];
-        nodes: Nodes;
+      { directions: [], paths: {} } as {
+        directions: Directions[];
+        paths: Paths;
       },
     ),
   );
 }
-type Model = ReturnType<typeof parse>;
+type DesertMap = ReturnType<typeof parse>;
 
-function traverseModel(model: Model, name: string) {
+function traverseDesertMap(desertMap: DesertMap, path: string) {
   return (
     pipe(
-      model.instructions,
+      desertMap.directions,
       cycle,
-      scan((name, instruction) => model.nodes[name][instruction], name),
-      takeWhile(name => name! !== "ZZZ"),
+      scan((path, direction) => desertMap.paths[path][direction], path),
+      takeWhile(path => path! !== "ZZZ"),
       count,
     ) + 1
   );
 }
 
 function part1(input: string) {
-  const model = parse(input);
-  return traverseModel(model, "AAA");
+  const desertMap = parse(input);
+  return traverseDesertMap(desertMap, "AAA");
 }
 
 describe("2023/day/08/part1", () => {
