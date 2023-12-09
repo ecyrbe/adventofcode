@@ -222,6 +222,25 @@ export function chunkBy<T>(fn: (item: T) => boolean) {
   };
 }
 
+// tuple of T with size N
+type Tuple<T, N extends number> = number extends N ? T[] : _TupleOf<T, N, []>;
+type _TupleOf<T, N extends number, $acc extends unknown[]> = $acc["length"] extends N
+  ? $acc
+  : _TupleOf<T, N, [T, ...$acc]>;
+
+export function window<T, N extends number>(size: N) {
+  return function* (input: Iterable<T>): Generator<Tuple<T, N>> {
+    let window: T[] = [];
+    for (const item of input) {
+      window.push(item);
+      if (window.length === size) {
+        yield window as Tuple<T, N>;
+        window.shift()!;
+      }
+    }
+  };
+}
+
 export function* zipAll<T>(input: Iterable<Iterable<T>>) {
   const iterators = [...input].map(i => i[Symbol.iterator]());
   while (true) {

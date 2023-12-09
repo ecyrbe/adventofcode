@@ -2,20 +2,13 @@ import { describe, it, expect } from "vitest";
 import { load } from "@utils/loader";
 import { pipe } from "@utils/pipe";
 import { lines } from "@utils/generators";
-import { appendOne, drop, flatMap, scan } from "@utils/operators";
+import { appendOne, flatMap, map, prependOne, window } from "@utils/operators";
 import { sum } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;
 const NOPARTS_REGEX = /^\.+$/;
 
 type Iterator = { prev: string; current: string; next: string };
-
-function iterate(iter: Iterator, item: string) {
-  const prev = iter.current;
-  const current = iter.next;
-  const next = item;
-  return { prev, current, next };
-}
 
 function extractAdjacent(str: string, start: number, end: number) {
   return str.slice(Math.max(start - 1, 0), Math.min(end + 1, str.length)) || ".";
@@ -44,9 +37,10 @@ function part1(input: string) {
   return pipe(
     input,
     lines,
+    prependOne(""),
     appendOne(""),
-    scan(iterate, { prev: "", current: "", next: "" }),
-    drop(1),
+    window(3),
+    map(([prev, current, next]): Iterator => ({ prev, current, next })),
     flatMap(findEngineParts),
     sum,
   );

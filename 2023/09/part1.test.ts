@@ -2,11 +2,10 @@ import { describe, it, expect } from "vitest";
 import { load } from "@utils/loader";
 import { mapFlow, pipe } from "@utils/pipe";
 import { lines, matchAll, recursive } from "@utils/generators";
-import { drop, map, scan, takeWhile } from "@utils/operators";
+import { drop, map, scan, takeWhile, window } from "@utils/operators";
 import { collect, sum } from "@utils/reducers";
 
 const NUMBER_REGEX = /(-?\d+)/g;
-type Deltas = [number, number];
 
 function parse(input: string) {
   return pipe(
@@ -34,8 +33,7 @@ function predictSensor(history: number[], predicted: number = 0) {
 function historyDeltas(history: number[]) {
   return pipe(
     history,
-    scan((deltas, item) => [deltas[1], item] as Deltas, [0, 0] as Deltas),
-    drop(1),
+    window(2),
     map(([a, b]) => b - a),
     collect,
   );
