@@ -1,10 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
 import { pipe } from "./pipe";
-
-export function load(dir: string) {
-  return fs.readFileSync(path.join(dir, "./input.txt"), "utf-8");
-}
 
 export function split(separator: string | RegExp) {
   return function* (input: string) {

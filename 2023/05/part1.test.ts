@@ -1,6 +1,7 @@
-import { mapFlow, pipe } from "@utils/pipe";
 import { describe, it, expect } from "vitest";
-import { lines, load, matchAll, split } from "@utils/generators";
+import { load } from "@utils/loader";
+import { mapFlow, pipe } from "@utils/pipe";
+import { lines, matchAll, split } from "@utils/generators";
 import { drop, enumerate, map } from "@utils/operators";
 import { collect, min, reduce } from "@utils/reducers";
 

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { load } from "@utils/loader";
 import { mapFlow, pipe } from "@utils/pipe";
-import { lines, load } from "@utils/generators";
+import { lines } from "@utils/generators";
 import { firstAndLast } from "@utils/operators";
 import { reduce, sum } from "@utils/reducers";
 
