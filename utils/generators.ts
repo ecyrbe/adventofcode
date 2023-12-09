@@ -86,6 +86,16 @@ export function scan<T, U>(fn: (sum: U, item: T) => U, initial: U) {
   };
 }
 
+export function recursive<T>(fn: (item: T) => T) {
+  return function* (initial: T) {
+    let item = initial;
+    while (true) {
+      yield item;
+      item = fn(item);
+    }
+  };
+}
+
 export function take<T>(count: number) {
   return function* (input: Iterable<T>) {
     let i = 0;

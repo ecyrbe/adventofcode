@@ -1,4 +1,4 @@
-import { drop, lines, load, log, map, matchAll, range, scan, takeWhile } from "@utils/generators";
+import { drop, lines, load, log, map, matchAll, range, recursive, scan, takeWhile } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
 import { collect, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
@@ -31,8 +31,8 @@ function interleavedDifference(input: Iterable<number>) {
 
 function predictSensor(history: number[], predicted: number = 0) {
   return pipe(
-    range(0, Infinity),
-    scan((history, i) => (i ? historyDeltas(history) : history), history),
+    history,
+    recursive(historyDeltas),
     takeWhile(history => history[0] !== history[history.length - 1] || history[0] !== 0),
     map(history => history[0]),
     interleavedDifference,

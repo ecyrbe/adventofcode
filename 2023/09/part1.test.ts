@@ -1,4 +1,4 @@
-import { drop, lines, load, log, map, matchAll, range, scan, takeWhile } from "@utils/generators";
+import { drop, lines, load, log, map, matchAll, range, recursive, scan, takeWhile } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
 import { collect, last, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
@@ -21,8 +21,8 @@ function parse(input: string) {
 
 function predictSensor(history: number[], predicted: number = 0) {
   return pipe(
-    range(0, Infinity),
-    scan((history, i) => (i ? historyDeltas(history) : history), history),
+    history,
+    recursive(historyDeltas),
     takeWhile(history => history[0] !== history[history.length - 1] || history[0] !== 0),
     map(history => history[history.length - 1]),
     sum,
