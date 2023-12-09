@@ -4,6 +4,7 @@ import { collect, last, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
 const NUMBER_REGEX = /(-?\d+)/g;
+type Deltas = [number, number];
 
 function parse(input: string) {
   return pipe(
@@ -31,7 +32,7 @@ function predictSensor(history: number[], predicted: number = 0) {
 function historyDeltas(history: number[]) {
   return pipe(
     history,
-    scan((two, item) => [two[1], item] as [number, number], [0, 0] as [number, number]),
+    scan((deltas, item) => [deltas[1], item] as Deltas, [0, 0] as Deltas),
     drop(1),
     map(([a, b]) => b - a),
     collect,
