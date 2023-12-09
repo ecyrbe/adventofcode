@@ -1,6 +1,6 @@
-import { drop, lines, load, log, map, matchAll, prependOne, scan, zipWith } from "@utils/generators";
+import { drop, lines, load, log, map, matchAll, range, scan, takeWhile } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
-import { collect, last, sum } from "@utils/reducers";
+import { collect, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
 const NUMBER_REGEX = /(-?\d+)/g;
@@ -19,14 +19,24 @@ function parse(input: string) {
   );
 }
 
-function predictSensor(history: number[], predicted: number = 0): number {
-  const first = history[0];
-  const last = history[history.length - 1];
-  if (first === last && first === 0) {
-    return -predicted;
-  } else {
-    return -predictSensor(historyDeltas(history), first - predicted);
+function interleavedDifference(input: Iterable<number>) {
+  let sum = 0;
+  let i = 0;
+  for (const item of input) {
+    if (i++ % 2 !== 0) sum = sum - item;
+    else sum = sum + item;
   }
+  return sum;
+}
+
+function predictSensor(history: number[], predicted: number = 0) {
+  return pipe(
+    range(0, Infinity),
+    scan((history, i) => (i ? historyDeltas(history) : history), history),
+    takeWhile(history => history[0] !== history[history.length - 1] || history[0] !== 0),
+    map(history => history[0]),
+    interleavedDifference,
+  );
 }
 
 function historyDeltas(history: number[]) {

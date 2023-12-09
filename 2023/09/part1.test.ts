@@ -1,4 +1,4 @@
-import { drop, lines, load, log, map, matchAll, prependOne, scan, zipWith } from "@utils/generators";
+import { drop, lines, load, log, map, matchAll, range, scan, takeWhile } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
 import { collect, last, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
@@ -20,13 +20,13 @@ function parse(input: string) {
 }
 
 function predictSensor(history: number[], predicted: number = 0) {
-  const first = history[0];
-  const last = history[history.length - 1];
-  if (first === last && first === 0) {
-    return predicted;
-  } else {
-    return predictSensor(historyDeltas(history), predicted + last);
-  }
+  return pipe(
+    range(0, Infinity),
+    scan((history, i) => (i ? historyDeltas(history) : history), history),
+    takeWhile(history => history[0] !== history[history.length - 1] || history[0] !== 0),
+    map(history => history[history.length - 1]),
+    sum,
+  );
 }
 
 function historyDeltas(history: number[]) {
