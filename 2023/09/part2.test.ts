@@ -30,7 +30,7 @@ function interleavedDifference(input: Iterable<number>) {
   return sum;
 }
 
-function predictSensor(history: number[], predicted: number = 0) {
+function pastSensor(history: number[], predicted: number = 0) {
   return pipe(
     history,
     recursive(historyDeltas),
@@ -52,10 +52,10 @@ function historyDeltas(history: number[]) {
 
 function part2(input: string) {
   const histories = parse(input);
-  return pipe(histories, map(predictSensor), sum);
+  return pipe(histories, map(pastSensor), sum);
 }
 
-describe("2023/day/08/part1", () => {
+describe("2023/day/08/part2", () => {
   it("should work with the example 1 input", () => {
     const input = `0 3 6 9 12 15
 1 3 6 10 15 21
