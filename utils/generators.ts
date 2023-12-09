@@ -35,6 +35,8 @@ export function* from<T>(input: Iterable<T>) {
   yield* input;
 }
 
+export const matchAll = (regex: RegExp) => (input: string) => input.matchAll(regex);
+
 export function filter<T, S extends T>(fn: (item: T) => item is S): (input: Iterable<T>) => Generator<S>;
 export function filter<T>(fn: (item: T) => boolean): (input: Iterable<T>) => Generator<T>;
 export function filter(fn: (item: any) => boolean) {

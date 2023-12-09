@@ -1,12 +1,10 @@
-import { drop, filter, lines, load, map, split } from "@utils/generators";
+import { drop, filter, lines, load, map, matchAll, split } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
 import { collectSet, fold, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
 const CARD_REGEX = /[:|]/g;
 const NUMBER_REGEX = /(\d+)/g;
-
-const matchAll = (regex: RegExp) => (input: string) => input.matchAll(regex);
 
 function intersect<T>(a: Set<T>, b: Set<T>) {
   return new Set([...a].filter(item => b.has(item)));

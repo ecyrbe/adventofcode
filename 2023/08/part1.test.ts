@@ -1,4 +1,4 @@
-import { cycle, filter, from, lines, load, map, scan, split, takeWhile } from "@utils/generators";
+import { cycle, filter, from, lines, load, map, matchAll, scan, split, takeWhile } from "@utils/generators";
 import { describe, it, expect } from "vitest";
 import { mapFlow, pipe } from "@utils/pipe";
 import { collect, count, reduce } from "@utils/reducers";
@@ -7,8 +7,6 @@ const LETTERS_REGEX = /([A-Z]+)/g;
 
 type Paths = Record<string, { L: string; R: string }>;
 type Directions = keyof Paths[string];
-
-const matchAll = (regex: RegExp) => (input: string) => input.matchAll(regex);
 
 function parse(input: string) {
   return pipe(

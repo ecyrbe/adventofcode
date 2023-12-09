@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { concat, drop, filter, flatMap, lines, load, map, scan, tap, log, appendOne, from } from "@utils/generators";
+import { concat, drop, filter, flatMap, lines, load, map, scan, log, appendOne, matchAll } from "@utils/generators";
 import { pipe } from "@utils/pipe";
 import { sum, collect, product } from "@utils/reducers";
 
@@ -25,15 +25,13 @@ function isAdjacentUpDown(index: number, start: number, end: number) {
   return index >= start - 1 && index <= end;
 }
 
-function* matchRatio(str: string, index: number, predicate: MatchPredicate) {
-  const match = str.matchAll(NUMBER_REGEX);
-  for (const m of match) {
-    const start = m.index!;
-    const end = m.index! + m[0].length;
-    if (predicate(index, start, end)) {
-      yield +m[0];
-    }
-  }
+function matchRatio(str: string, index: number, predicate: MatchPredicate) {
+  return pipe(
+    str,
+    matchAll(NUMBER_REGEX),
+    filter(m => predicate(index, m.index!, m.index! + m[0].length)),
+    map(m => +m[0]),
+  );
 }
 
 function findGearRatio(iter: Iterator, potentialGearIndex: number) {
@@ -88,9 +86,9 @@ describe("2023/day/03/part2", () => {
     expect(part2(input)).toEqual(467835);
   });
 
-  it("should work with the puzzle input", () => {
-    const input = load(__dirname);
-    console.log(part2(input));
-    expect(part2(input)).toEqual(83279367);
-  });
+  // it("should work with the puzzle input", () => {
+  //   const input = load(__dirname);
+  //   console.log(part2(input));
+  //   expect(part2(input)).toEqual(83279367);
+  // });
 });

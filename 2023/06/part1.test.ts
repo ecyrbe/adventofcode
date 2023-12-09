@@ -1,11 +1,9 @@
-import { lines, load, map, zipAll } from "@utils/generators";
+import { lines, load, map, matchAll, zipAll } from "@utils/generators";
 import { pipe, mapFlow } from "@utils/pipe";
 import { product } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
 
 const NUMBER_REGEX = /(\d+)/g;
-
-const matchAll = (regex: RegExp) => (input: string) => input.matchAll(regex);
 
 function parse(input: string) {
   return pipe(

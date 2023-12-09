@@ -1,4 +1,4 @@
-import { drop, enumerate, lines, load, map, split } from "@utils/generators";
+import { drop, enumerate, lines, load, map, matchAll, split } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
 import { collect, find, min, reduce } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
@@ -9,8 +9,6 @@ type SeedsMapping = {
 };
 
 const NUMBER_REGEX = /(\d+)/g;
-
-const matchAll = (regex: RegExp) => (input: string) => input.matchAll(regex);
 
 function parseMapping(input: string) {
   return pipe(
