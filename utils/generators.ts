@@ -209,12 +209,13 @@ export function* zip<T, U>(input1: Iterable<T>, input2: Iterable<U>) {
   }
 }
 
-export function* zipWith<T, U, V>(fn: (item1: T, item2: U) => V, input1: Iterable<T>, input2: Iterable<U>) {
-  for (const [item1, item2] of zip(input1, input2)) {
-    yield fn(item1, item2);
-  }
+export function zipWith<T, U, V>(fn: (item1: T, item2: U) => V, input1: Iterable<T>) {
+  return function* (input2: Iterable<U>) {
+    for (const [item1, item2] of zip(input1, input2)) {
+      yield fn(item1, item2);
+    }
+  };
 }
-
 export function* zipAll<T>(input: Iterable<Iterable<T>>) {
   const iterators = [...input].map(i => i[Symbol.iterator]());
   while (true) {
