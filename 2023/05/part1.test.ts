@@ -1,7 +1,8 @@
-import { drop, enumerate, lines, load, map, matchAll, split } from "@utils/generators";
 import { mapFlow, pipe } from "@utils/pipe";
-import { collect, find, min, reduce } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
+import { lines, load, matchAll, split } from "@utils/generators";
+import { drop, enumerate, map } from "@utils/operators";
+import { collect, min, reduce } from "@utils/reducers";
 
 type SeedsMapping = {
   seeds: number[];

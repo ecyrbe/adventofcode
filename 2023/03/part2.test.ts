@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { concat, drop, filter, flatMap, lines, load, map, scan, log, appendOne, matchAll } from "@utils/generators";
 import { pipe } from "@utils/pipe";
+import { concat, lines, load, matchAll } from "@utils/generators";
+import { appendOne, drop, filter, flatMap, map, scan } from "@utils/operators";
 import { sum, collect, product } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;
@@ -86,9 +87,9 @@ describe("2023/day/03/part2", () => {
     expect(part2(input)).toEqual(467835);
   });
 
-  // it("should work with the puzzle input", () => {
-  //   const input = load(__dirname);
-  //   console.log(part2(input));
-  //   expect(part2(input)).toEqual(83279367);
-  // });
+  it("should work with the puzzle input", () => {
+    const input = load(__dirname);
+    console.log(part2(input));
+    expect(part2(input)).toEqual(83279367);
+  });
 });

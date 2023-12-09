@@ -1,7 +1,8 @@
-import { chunk, drop, enumerate, lines, load, log, map, matchAll, split } from "@utils/generators";
-import { mapFlow, pipe } from "@utils/pipe";
-import { collect, find, min, reduce, sort } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
+import { mapFlow, pipe } from "@utils/pipe";
+import { lines, load, matchAll, split } from "@utils/generators";
+import { chunk, drop, enumerate, map } from "@utils/operators";
+import { collect, min, reduce } from "@utils/reducers";
 
 type Seed = [number, number];
 type Mapping = [[number, number], [number, number]];

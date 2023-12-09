@@ -1,6 +1,7 @@
-import { cycle, filter, from, lines, load, map, matchAll, scan, takeWhile } from "@utils/generators";
 import { describe, it, expect } from "vitest";
 import { mapFlow, pipe } from "@utils/pipe";
+import { from, lines, load, matchAll } from "@utils/generators";
+import { cycle, filter, map, scan, takeWhile } from "@utils/operators";
 import { collect, count, fold, reduce } from "@utils/reducers";
 
 const LETTERS_REGEX = /([A-Z]+)/g;

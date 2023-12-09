@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
-import { append, appendOne, drop, flatMap, lines, load, scan } from "@utils/generators";
 import { pipe } from "@utils/pipe";
+import { lines, load } from "@utils/generators";
+import { appendOne, drop, flatMap, scan } from "@utils/operators";
 import { sum } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;

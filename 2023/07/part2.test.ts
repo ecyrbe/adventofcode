@@ -1,7 +1,8 @@
-import { enumerate, filter, lines, load, log, map } from "@utils/generators";
-import { pipe } from "@utils/pipe";
-import { collect, reduce, sort, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
+import { pipe } from "@utils/pipe";
+import { lines, load } from "@utils/generators";
+import { enumerate, filter, map } from "@utils/operators";
+import { collect, reduce, sort, sum } from "@utils/reducers";
 
 const cards = ["A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2", "J"] as const;
 type Card = (typeof cards)[number];

@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { firstAndLast, lines, load, map } from "@utils/generators";
-import { reduce, sum } from "@utils/reducers";
 import { mapFlow, pipe } from "@utils/pipe";
+import { lines, load } from "@utils/generators";
+import { firstAndLast } from "@utils/operators";
+import { reduce, sum } from "@utils/reducers";
 
 const ALPHADIGITSMAP = {
   one: 1,

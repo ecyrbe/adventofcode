@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { split, lines, load, map } from "@utils/generators";
-import { reduce, sum } from "@utils/reducers";
 import { pipe } from "@utils/pipe";
+import { split, lines, load } from "@utils/generators";
+import { map } from "@utils/operators";
+import { reduce, sum } from "@utils/reducers";
 
 type Game = {
   id: number;

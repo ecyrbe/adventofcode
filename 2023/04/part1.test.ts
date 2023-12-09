@@ -1,7 +1,8 @@
-import { drop, filter, lines, load, map, matchAll, split } from "@utils/generators";
-import { mapFlow, pipe } from "@utils/pipe";
-import { collectSet, fold, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
+import { mapFlow, pipe } from "@utils/pipe";
+import { lines, load, matchAll, split } from "@utils/generators";
+import { drop, filter, map } from "@utils/operators";
+import { collectSet, fold, sum } from "@utils/reducers";
 
 const CARD_REGEX = /[:|]/g;
 const NUMBER_REGEX = /(\d+)/g;

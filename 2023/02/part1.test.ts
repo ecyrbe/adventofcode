@@ -1,7 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { split, lines, load, map, filter } from "@utils/generators";
-import { every, sum } from "@utils/reducers";
 import { pipe } from "@utils/pipe";
+import { split, lines, load } from "@utils/generators";
+import { filter, map } from "@utils/operators";
+import { every, sum } from "@utils/reducers";
 
 const LEGAL = {
   red: 12,

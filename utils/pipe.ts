@@ -1,4 +1,4 @@
-import { map } from "./generators";
+import { map } from "./operators";
 
 export function pipe<A, B>(input: A, fn: (input: A) => B): B;
 export function pipe<A, B, C>(input: A, fn1: (input: A) => B, fn2: (input: B) => C): C;

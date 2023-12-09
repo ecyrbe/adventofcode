@@ -1,7 +1,8 @@
-import { drop, lines, load, log, map, matchAll, range, recursive, scan, takeWhile } from "@utils/generators";
-import { mapFlow, pipe } from "@utils/pipe";
-import { collect, last, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
+import { mapFlow, pipe } from "@utils/pipe";
+import { lines, load, matchAll, recursive } from "@utils/generators";
+import { drop, map, scan, takeWhile } from "@utils/operators";
+import { collect, sum } from "@utils/reducers";
 
 const NUMBER_REGEX = /(-?\d+)/g;
 type Deltas = [number, number];
