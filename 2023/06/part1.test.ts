@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { pipe, mapFlow } from "@utils/pipe";
-import { lines, load, matchAll, zipAll } from "@utils/generators";
-import { map } from "@utils/operators";
+import { lines, load, matchAll } from "@utils/generators";
+import { map, zipAll } from "@utils/operators";
 import { product } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;

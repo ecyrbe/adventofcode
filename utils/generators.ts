@@ -47,13 +47,13 @@ export function recursive<T>(fn: (item: T) => T) {
   };
 }
 
-export function* range(start: number, end: number) {
-  for (let i = start; i <= end; i++) {
+export function* range(start: number, end: number = Infinity, step: number = 1) {
+  for (let i = start; i <= end; i += step) {
     yield i;
   }
 }
 
-export function* repeat<T>(item: T, count: number) {
+export function* repeat<T>(item: T, count: number = Infinity) {
   for (let i = 0; i < count; i++) {
     yield item;
   }
@@ -61,9 +61,7 @@ export function* repeat<T>(item: T, count: number) {
 
 export function* concat<T>(...inputs: Iterable<T>[]) {
   for (const input of inputs) {
-    for (const item of input) {
-      yield item;
-    }
+    yield* input;
   }
 }
 
@@ -84,13 +82,4 @@ export function zipWith<T, U, V>(fn: (item1: T, item2: U) => V, input1: Iterable
       yield fn(item1, item2);
     }
   };
-}
-
-export function* zipAll<T>(input: Iterable<Iterable<T>>) {
-  const iterators = [...input].map(i => i[Symbol.iterator]());
-  while (true) {
-    const results = iterators.map(i => i.next());
-    if (results.some(r => r.done)) return;
-    yield results.map(r => r.value) as T[];
-  }
 }

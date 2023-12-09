@@ -221,3 +221,12 @@ export function chunkBy<T>(fn: (item: T) => boolean) {
     if (chunk.length > 0) yield chunk;
   };
 }
+
+export function* zipAll<T>(input: Iterable<Iterable<T>>) {
+  const iterators = [...input].map(i => i[Symbol.iterator]());
+  while (true) {
+    const results = iterators.map(i => i.next());
+    if (results.some(r => r.done)) return;
+    yield results.map(r => r.value) as T[];
+  }
+}
