@@ -2,8 +2,8 @@ import { describe, it, expect } from "vitest";
 import { load } from "@utils/loader";
 import { mapFlow, pipe } from "@utils/pipe";
 import { lines, matchAll, recursive } from "@utils/generators";
-import { drop, map, scan, takeWhile, window } from "@utils/operators";
-import { collect, sum } from "@utils/reducers";
+import { map, takeWhile, window } from "@utils/operators";
+import { collect, first, last, sum } from "@utils/reducers";
 
 const NUMBER_REGEX = /(-?\d+)/g;
 
@@ -20,12 +20,12 @@ function parse(input: string) {
   );
 }
 
-function predictSensor(history: number[], predicted: number = 0) {
+function predictSensor(history: number[]) {
   return pipe(
     history,
     recursive(historyDeltas),
-    takeWhile(history => history[0] !== history[history.length - 1] || history[0] !== 0),
-    map(history => history[history.length - 1]),
+    takeWhile(history => first(history) !== last(history) || first(history) !== 0),
+    map(history => last(history)!),
     sum,
   );
 }

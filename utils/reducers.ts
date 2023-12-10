@@ -55,6 +55,7 @@ export function first<T>(input: Iterable<T>) {
 }
 
 export function last<T>(input: Iterable<T>) {
+  if (Array.isArray(input)) return input.at(-1) as T;
   let last: T | undefined;
   for (const item of input) {
     last = item;
