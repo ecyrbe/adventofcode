@@ -103,11 +103,11 @@ function getDirection(direction: PoleDirection, item: PipeItems): PoleDirection 
   // @ts-ignore bug in typescript with unicode
   return directionMap[direction][item] || direction;
 }
-function part2(input: string) {
-  const pipeMap = parse(input);
+
+function buildLoop(pipeMap: PipeItems[][]) {
+  const visited = new Map<string, PoleDirection>();
   const start = findStart(pipeMap)!;
   const queue: BFSQueue = [{ position: start, distance: 0 }];
-  const visited = new Map<string, PoleDirection>();
   const startKey = start.join(",");
   let direction: PoleDirection = "south";
   visited.set(startKey, direction);
@@ -128,7 +128,10 @@ function part2(input: string) {
       }
     }
   }
+  return visited;
+}
 
+function totalNotInLoop(pipeMap: PipeItems[][], loop: Map<string, PoleDirection>) {
   let total = 0;
   for (let y = 0; y < pipeMap.length; y++) {
     const row = pipeMap[y];
@@ -137,24 +140,32 @@ function part2(input: string) {
     let lastswitch = "";
     for (let x = 0; x < row.length; x++) {
       const key = [x, y].join(",");
-      if (!visited.has(key) && inLoop) {
+      const isDirectionSwitch = (dir: "north" | "south") =>
+        loop.has(key) && loop.get(key)?.includes(dir) && lastswitch !== dir;
+
+      if (!loop.has(key) && inLoop) {
         rowTotal += 1;
-      } else if (visited.has(key) && visited.get(key)?.includes("north") && lastswitch !== "north") {
+      } else if (isDirectionSwitch("north")) {
         inLoop = !inLoop;
         lastswitch = "north";
-      } else if (visited.has(key) && visited.get(key)?.includes("south") && lastswitch !== "south") {
+      } else if (isDirectionSwitch("south")) {
         inLoop = !inLoop;
         lastswitch = "south";
       }
     }
     total += rowTotal;
   }
-
   return total;
 }
 
+function part2(input: string) {
+  const pipeMap = parse(input);
+  const loop = buildLoop(pipeMap);
+  return totalNotInLoop(pipeMap, loop);
+}
+
 describe("2023/day/10/part2", () => {
-  it.skip("should work with the example 1 input", () => {
+  it("should work with the example 1 input", () => {
     const input = `     
  ☺═╗ 
  ║ ║ 
@@ -164,7 +175,7 @@ describe("2023/day/10/part2", () => {
     expect(result).toEqual(1);
   });
 
-  it.skip("should work with the example 2 input", () => {
+  it("should work with the example 2 input", () => {
     const input = `
  ╗═╔╗═
   ╔╝║╗
@@ -175,7 +186,7 @@ describe("2023/day/10/part2", () => {
     expect(result).toEqual(1);
   });
 
-  it.skip("should work with the example 3 input", () => {
+  it("should work with the example 3 input", () => {
     const input = `
  ☺═══════╗
  ║╔═════╗║
