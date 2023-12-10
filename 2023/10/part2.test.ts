@@ -107,13 +107,12 @@ function getDirection(direction: PoleDirection, item: PipeItems): PoleDirection 
 function buildLoop(pipeMap: PipeItems[][]) {
   const pipeLoop = new Map<string, PoleDirection>();
   const start = findStart(pipeMap)!;
-  const queue: BFSQueue = [{ position: start, distance: 0 }];
+  const queue = [start];
   const startKey = start.join(",");
   let direction: PoleDirection = "south";
   pipeLoop.set(startKey, direction);
   while (queue.length > 0) {
-    const { position, distance } = queue.shift()!;
-    const [x, y] = position;
+    const [x, y] = queue.shift()!;
     const currentPipe: PipeItems = pipeMap[y][x];
     // @ts-ignore bug in typescript with unicode
     const directions = authorisedDirections[currentPipe] as Direction[];
@@ -124,7 +123,7 @@ function buildLoop(pipeMap: PipeItems[][]) {
       if (authorized.includes(nextPipe) && !pipeLoop.has(newVisited)) {
         direction = getDirection(direction, nextPipe);
         pipeLoop.set(newVisited, direction);
-        queue.push({ position: newPosition, distance: distance + 1 });
+        queue.push(newPosition);
       }
     }
   }
