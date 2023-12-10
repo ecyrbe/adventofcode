@@ -105,12 +105,12 @@ function getDirection(direction: PoleDirection, item: PipeItems): PoleDirection 
 }
 
 function buildLoop(pipeMap: PipeItems[][]) {
-  const visited = new Map<string, PoleDirection>();
+  const pipeLoop = new Map<string, PoleDirection>();
   const start = findStart(pipeMap)!;
   const queue: BFSQueue = [{ position: start, distance: 0 }];
   const startKey = start.join(",");
   let direction: PoleDirection = "south";
-  visited.set(startKey, direction);
+  pipeLoop.set(startKey, direction);
   while (queue.length > 0) {
     const { position, distance } = queue.shift()!;
     const [x, y] = position;
@@ -121,14 +121,14 @@ function buildLoop(pipeMap: PipeItems[][]) {
       const newPosition = [x + dx, y + dy] as [number, number];
       const newVisited = newPosition.join(",");
       const nextPipe = pipeMap[newPosition[1]][newPosition[0]];
-      if (authorized.includes(nextPipe) && !visited.has(newVisited)) {
+      if (authorized.includes(nextPipe) && !pipeLoop.has(newVisited)) {
         direction = getDirection(direction, nextPipe);
-        visited.set(newVisited, direction);
+        pipeLoop.set(newVisited, direction);
         queue.push({ position: newPosition, distance: distance + 1 });
       }
     }
   }
-  return visited;
+  return pipeLoop;
 }
 
 function totalNotInLoop(pipeMap: PipeItems[][], loop: Map<string, PoleDirection>) {
