@@ -1,9 +1,9 @@
-import { lines } from "@utils/generators";
-import { load } from "@utils/loader";
-import { duplicateWhen, enumerate, filter, flatMap, flatten, log, map, scan, transpose } from "@utils/operators";
-import { mapFlow, pipe } from "@utils/pipe";
-import { collect, reduce, sum } from "@utils/reducers";
 import { describe, it, expect } from "vitest";
+import { load } from "@utils/loader";
+import { mapFlow, pipe } from "@utils/pipe";
+import { lines } from "@utils/generators";
+import { duplicateWhen, enumerate, filter, flatMap, map, transpose } from "@utils/operators";
+import { collect, sum } from "@utils/reducers";
 
 function parse(input: string) {
   return pipe(
@@ -20,9 +20,7 @@ function parse(input: string) {
   );
 }
 
-function part1(input: string) {
-  //                                y        x      star
-  const skymap = parse(input) as [number, [number, string][]][];
+function getStarPairs(skymap: [number, [number, string][]][]) {
   const skyStars = pipe(
     skymap,
     map(row => [
@@ -46,6 +44,13 @@ function part1(input: string) {
   const startPairs = skyStars.flatMap((star, index) =>
     skyStars.slice(index + 1).map(other => [star, other] as [[number, number], [number, number]]),
   );
+  return startPairs;
+}
+
+function part1(input: string) {
+  //                                y        x      star
+  const skymap = parse(input) as [number, [number, string][]][];
+  const startPairs = getStarPairs(skymap);
   return pipe(
     startPairs,
     map(([star1, star2]) => {
