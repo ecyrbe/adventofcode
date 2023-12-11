@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { load } from "@utils/loader";
 import { mapFlow, pipe } from "@utils/pipe";
 import { lines } from "@utils/generators";
-import { duplicateWhen, enumerate, filter, flatMap, map, transpose } from "@utils/operators";
+import { map, transpose } from "@utils/operators";
 import { collect, sum } from "@utils/reducers";
 
 function parse(input: string) {
@@ -33,14 +33,14 @@ function getStarCoordinates(skymap: string[][]) {
   for (let y = 0; y < skymap.length; y++) {
     const row = skymap[y];
     if (!row.includes("#")) {
-      realY += 2;
+      realY += 1_000_000;
     } else {
       realY += 1;
     }
     let realX = 0;
     for (let x = 0; x < row.length; x++) {
       if (!hasStarInColumn(x)) {
-        realX += 2;
+        realX += 1_000_000;
       } else {
         realX += 1;
       }
@@ -51,6 +51,7 @@ function getStarCoordinates(skymap: string[][]) {
   }
   return stars;
 }
+
 function getStarPairs(skyStars: [number, number][]) {
   const startPairs = skyStars.flatMap((star, index) =>
     skyStars.slice(index + 1).map(other => [star, other] as [[number, number], [number, number]]),
@@ -70,14 +71,14 @@ function computeStarDistances(startPairs: [[number, number], [number, number]][]
   );
 }
 
-function part1(input: string) {
+function part2(input: string) {
   const skymap = parse(input);
   const starCoordinates = getStarCoordinates(skymap);
   const startPairs = getStarPairs(starCoordinates);
   return computeStarDistances(startPairs);
 }
 
-describe("2023/day/11/part1", () => {
+describe("2023/day/11/part2", () => {
   it("should work with the example input", () => {
     const input = `...#......
 .......#..
@@ -89,13 +90,13 @@ describe("2023/day/11/part1", () => {
 ..........
 .......#..
 #...#.....`;
-    const result = part1(input);
-    expect(result).toEqual(374);
+    const result = part2(input);
+    expect(result).toEqual(82000210);
   });
 
   it("should work with the puzzle input", () => {
     const input = load(__dirname);
-    const result = part1(input);
-    expect(result).toEqual(9550717);
+    const result = part2(input);
+    expect(result).toEqual(648458253817);
   });
 });
