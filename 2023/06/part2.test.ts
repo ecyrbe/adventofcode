@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { load } from "@utils/loader";
 import { pipe, mapFlow } from "@utils/pipe";
 import { lines, matchAll } from "@utils/generators";
-import { map, zipAll } from "@utils/operators";
+import { map, transpose } from "@utils/operators";
 import { product } from "@utils/reducers";
 
 const NUMBER_REGEX = /(\d+)/g;
@@ -16,7 +16,7 @@ function parse(input: string) {
       matchAll(NUMBER_REGEX),
       map(m => +m[0]),
     ),
-    zipAll,
+    transpose,
   );
 }
 

@@ -194,6 +194,15 @@ export function* duplicate<T>(input: Iterable<T>) {
   }
 }
 
+export function duplicateWhen<T>(fn: (item: T) => boolean) {
+  return function* (input: Iterable<T>) {
+    for (const item of input) {
+      yield item;
+      if (fn(item)) yield item;
+    }
+  };
+}
+
 export function chunk<T>(size: number) {
   return function* (input: Iterable<T>) {
     let chunk: T[] = [];
@@ -241,7 +250,7 @@ export function window<T, N extends number>(size: N) {
   };
 }
 
-export function* zipAll<T>(input: Iterable<Iterable<T>>) {
+export function* transpose<T>(input: Iterable<Iterable<T>>) {
   const iterators = [...input].map(i => i[Symbol.iterator]());
   while (true) {
     const results = iterators.map(i => i.next());
