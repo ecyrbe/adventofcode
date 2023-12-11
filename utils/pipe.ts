@@ -37,6 +37,56 @@ export function pipe<A, B, C, D, E, F, G, H>(
   fn6: (input: F) => G,
   fn7: (input: G) => H,
 ): H;
+export function pipe<A, B, C, D, E, F, G, H, I>(
+  input: A,
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+  fn5: (input: E) => F,
+  fn6: (input: F) => G,
+  fn7: (input: G) => H,
+  fn8: (input: H) => I,
+): I;
+export function pipe<A, B, C, D, E, F, G, H, I, J>(
+  input: A,
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+  fn5: (input: E) => F,
+  fn6: (input: F) => G,
+  fn7: (input: G) => H,
+  fn8: (input: H) => I,
+  fn9: (input: I) => J,
+): J;
+export function pipe<A, B, C, D, E, F, G, H, I, J, K>(
+  input: A,
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+  fn5: (input: E) => F,
+  fn6: (input: F) => G,
+  fn7: (input: G) => H,
+  fn8: (input: H) => I,
+  fn9: (input: I) => J,
+  fn10: (input: J) => K,
+): K;
+export function pipe<A, B, C, D, E, F, G, H, I, J, K, L>(
+  input: A,
+  fn1: (input: A) => B,
+  fn2: (input: B) => C,
+  fn3: (input: C) => D,
+  fn4: (input: D) => E,
+  fn5: (input: E) => F,
+  fn6: (input: F) => G,
+  fn7: (input: G) => H,
+  fn8: (input: H) => I,
+  fn9: (input: I) => J,
+  fn10: (input: J) => K,
+  fn11: (input: K) => L,
+): L;
 export function pipe(input: any, ...fns: any[]) {
   return fns.reduce((input, fn) => fn(input), input);
 }
