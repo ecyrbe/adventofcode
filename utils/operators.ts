@@ -1,27 +1,30 @@
-export function filter<T, S extends T>(fn: (item: T) => item is S): (input: Iterable<T>) => Generator<S>;
-export function filter<T>(fn: (item: T) => boolean): (input: Iterable<T>) => Generator<T>;
-export function filter(fn: (item: any) => boolean) {
+export function filter<T, S extends T>(fn: (item: T, index: number) => item is S): (input: Iterable<T>) => Generator<S>;
+export function filter<T>(fn: (item: T, index: number) => boolean): (input: Iterable<T>) => Generator<T>;
+export function filter(fn: (item: any, index: number) => boolean) {
   return function* (input: Iterable<any>) {
+    let index = 0;
     for (const item of input) {
-      if (fn(item)) {
+      if (fn(item, index++)) {
         yield item;
       }
     }
   };
 }
 
-export function map<T, U>(fn: (item: T) => U) {
+export function map<T, U>(fn: (item: T, index: number) => U) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     for (const item of input) {
-      yield fn(item);
+      yield fn(item, index++);
     }
   };
 }
 
-export function filterMap<T, U>(fn: (item: T) => U | undefined) {
+export function filterMap<T, U>(fn: (item: T, index: number) => U | undefined) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     for (const item of input) {
-      const mapped = fn(item);
+      const mapped = fn(item, index++);
       if (mapped !== undefined) {
         yield mapped;
       }
@@ -37,11 +40,12 @@ export function pluck<T, K extends keyof T>(key: K) {
   };
 }
 
-export function scan<T, U>(fn: (sum: U, item: T) => U, initial: U) {
+export function scan<T, U>(fn: (sum: U, item: T, index: number) => U, initial: U) {
   return function* (input: Iterable<T>) {
     let sum = initial;
+    let index = 0;
     for (const item of input) {
-      sum = fn(sum, item);
+      sum = fn(sum, item, index++);
       yield sum;
     }
   };
@@ -57,10 +61,11 @@ export function take<T>(count: number) {
   };
 }
 
-export function takeWhile<T>(fn: (item: T) => boolean) {
+export function takeWhile<T>(fn: (item: T, index: number) => boolean) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     for (const item of input) {
-      if (!fn(item)) return;
+      if (!fn(item, index++)) return;
       yield item;
     }
   };
@@ -76,12 +81,14 @@ export function drop<T>(count: number) {
   };
 }
 
-export function dropWhile<T>(fn: (item: T) => boolean) {
+export function dropWhile<T>(fn: (item: T, index: number) => boolean) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     let dropping = true;
     for (const item of input) {
-      if (dropping && !fn(item)) dropping = false;
+      if (dropping && !fn(item, index)) dropping = false;
       if (!dropping) yield item;
+      index++;
     }
   };
 }
@@ -97,10 +104,11 @@ export function* firstAndLast<T>(input: Iterable<T>) {
   if (last) yield last;
 }
 
-export function tap<T>(fn: (item: T) => void) {
+export function tap<T>(fn: (item: T, index: number) => void) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     for (const item of input) {
-      fn(item);
+      fn(item, index++);
       yield item;
     }
   };
@@ -169,10 +177,11 @@ export function* flatten<T>(input: Iterable<Iterable<T>>) {
   }
 }
 
-export function flatMap<T, U>(fn: (item: T) => Iterable<U>) {
+export function flatMap<T, U>(fn: (item: T, index: number) => Iterable<U>) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     for (const item of input) {
-      yield* fn(item);
+      yield* fn(item, index++);
     }
   };
 }
@@ -194,11 +203,12 @@ export function* duplicate<T>(input: Iterable<T>) {
   }
 }
 
-export function duplicateWhen<T>(fn: (item: T) => boolean) {
+export function duplicateWhen<T>(fn: (item: T, index: number) => boolean) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     for (const item of input) {
       yield item;
-      if (fn(item)) yield item;
+      if (fn(item, index++)) yield item;
     }
   };
 }
@@ -217,11 +227,12 @@ export function chunk<T>(size: number) {
   };
 }
 
-export function chunkBy<T>(fn: (item: T) => boolean) {
+export function chunkBy<T>(fn: (item: T, index: number) => boolean) {
   return function* (input: Iterable<T>) {
+    let index = 0;
     let chunk: T[] = [];
     for (const item of input) {
-      if (fn(item)) {
+      if (fn(item, index++)) {
         yield chunk;
         chunk = [];
       }
