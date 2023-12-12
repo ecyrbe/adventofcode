@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { load } from "@utils/loader";
 import { mapFlow, pipe } from "@utils/pipe";
 import { lines } from "@utils/generators";
-import { map, transpose } from "@utils/operators";
+import { drop, flatMap, map, transpose } from "@utils/operators";
 import { collect, sum } from "@utils/reducers";
 
 function parse(input: string) {
@@ -53,10 +53,17 @@ function getStarCoordinates(skymap: string[][]) {
 }
 
 function getStarPairs(skyStars: [number, number][]) {
-  const startPairs = skyStars.flatMap((star, index) =>
-    skyStars.slice(index + 1).map(other => [star, other] as [[number, number], [number, number]]),
+  return pipe(
+    skyStars,
+    flatMap((star, index) =>
+      pipe(
+        skyStars,
+        drop(index + 1),
+        map(other => [star, other] as [[number, number], [number, number]]),
+      ),
+    ),
+    collect,
   );
-  return startPairs;
 }
 
 function computeStarDistances(startPairs: [[number, number], [number, number]][]) {
