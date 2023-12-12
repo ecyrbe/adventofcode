@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { load } from "@utils/loader";
 import { mapFlow, pipe } from "@utils/pipe";
 import { lines } from "@utils/generators";
-import { drop, duplicateWhen, enumerate, filter, flatMap, map, transpose } from "@utils/operators";
+import { drop, flatMap, map, transpose } from "@utils/operators";
 import { collect, sum } from "@utils/reducers";
 
 function parse(input: string) {
@@ -78,10 +78,7 @@ function computeStarDistances(startPairs: [[number, number], [number, number]][]
 }
 
 function part1(input: string) {
-  const skymap = parse(input);
-  const starCoordinates = getStarCoordinates(skymap);
-  const startPairs = getStarPairs(starCoordinates);
-  return computeStarDistances(startPairs);
+  return pipe(input, parse, getStarCoordinates, getStarPairs, computeStarDistances);
 }
 
 describe("2023/day/11/part1", () => {

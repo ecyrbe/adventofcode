@@ -79,10 +79,7 @@ function computeStarDistances(startPairs: [[number, number], [number, number]][]
 }
 
 function part2(input: string) {
-  const skymap = parse(input);
-  const starCoordinates = getStarCoordinates(skymap);
-  const startPairs = getStarPairs(starCoordinates);
-  return computeStarDistances(startPairs);
+  return pipe(input, parse, getStarCoordinates, getStarPairs, computeStarDistances);
 }
 
 describe("2023/day/11/part2", () => {
