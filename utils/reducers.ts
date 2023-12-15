@@ -147,14 +147,14 @@ export function average(input: Iterable<number>) {
 
 export function alternateSum(input: Iterable<number>) {
   let sum = 0;
-  let doadd = true;
+  let even = true;
   for (const item of input) {
-    if (doadd) {
+    if (even) {
       sum += item;
     } else {
       sum -= item;
     }
-    doadd = !doadd;
+    even = !even;
   }
   return sum;
 }
