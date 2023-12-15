@@ -3,7 +3,7 @@ import { load } from "@utils/loader";
 import { mapFlow, pipe } from "@utils/pipe";
 import { lines, matchAll, recursive } from "@utils/generators";
 import { drop, map, scan, takeWhile, window } from "@utils/operators";
-import { collect, first, last, sum } from "@utils/reducers";
+import { alternateSum, collect, first, last, sum } from "@utils/reducers";
 
 const NUMBER_REGEX = /(-?\d+)/g;
 
@@ -20,23 +20,13 @@ function parse(input: string) {
   );
 }
 
-function interleavedDifference(input: Iterable<number>) {
-  let sum = 0;
-  let i = 0;
-  for (const item of input) {
-    if (i++ % 2 !== 0) sum -= item;
-    else sum += item;
-  }
-  return sum;
-}
-
 function pastSensor(history: number[]) {
   return pipe(
     history,
     recursive(historyDeltas),
     takeWhile(history => first(history) !== last(history) || first(history) !== 0),
     map(history => first(history)!),
-    interleavedDifference,
+    alternateSum,
   );
 }
 

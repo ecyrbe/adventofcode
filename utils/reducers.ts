@@ -145,6 +145,20 @@ export function average(input: Iterable<number>) {
   return sum / count;
 }
 
+export function alternateSum(input: Iterable<number>) {
+  let sum = 0;
+  let doadd = true;
+  for (const item of input) {
+    if (doadd) {
+      sum += item;
+    } else {
+      sum -= item;
+    }
+    doadd = !doadd;
+  }
+  return sum;
+}
+
 export function count<T>(input: Iterable<T>) {
   let count = 0;
   for (const item of input) {
