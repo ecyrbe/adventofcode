@@ -29,13 +29,6 @@ export function parse(input: string): Input {
     }),
     collect,
   );
-
-  // return input.split("\n").map(line => {
-  //   const [prefix, suffix] = line.split(" ");
-  //   const first = new TextEncoder().encode(prefix);
-  //   const second = suffix.split(",").map(n => +n);
-  //   return [first, second];
-  // });
 }
 
 export function solve(input: Input, repeat: number): number {
