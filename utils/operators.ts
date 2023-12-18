@@ -1,3 +1,9 @@
+// tuple of T with size N
+type Tuple<T, N extends number> = number extends N ? T[] : _TupleOf<T, N, []>;
+type _TupleOf<T, N extends number, $acc extends unknown[]> = $acc["length"] extends N
+  ? $acc
+  : _TupleOf<T, N, [T, ...$acc]>;
+
 export function filter<T, S extends T>(fn: (item: T, index: number) => item is S): (input: Iterable<T>) => Generator<S>;
 export function filter<T>(fn: (item: T, index: number) => boolean): (input: Iterable<T>) => Generator<T>;
 export function filter(fn: (item: any, index: number) => boolean) {
@@ -21,7 +27,7 @@ export function map<T, U>(fn: (item: T, index: number) => U) {
 }
 
 export function filterMap<T, U>(fn: (item: T, index: number) => U | undefined) {
-  return function* (input: Iterable<T>) {
+  return function* (input: Iterable<T>): Generator<U> {
     let index = 0;
     for (const item of input) {
       const mapped = fn(item, index++);
@@ -79,6 +85,14 @@ export function drop<T>(count: number) {
       i++;
     }
   };
+}
+
+export function* tail<T>(input: Iterable<T>) {
+  let first = true;
+  for (const item of input) {
+    if (!first) yield item;
+    first = false;
+  }
 }
 
 export function dropWhile<T>(fn: (item: T, index: number) => boolean) {
@@ -213,17 +227,17 @@ export function duplicateWhen<T>(fn: (item: T, index: number) => boolean) {
   };
 }
 
-export function chunk<T>(size: number) {
-  return function* (input: Iterable<T>) {
+export function chunk<T, N extends number>(size: N) {
+  return function* (input: Iterable<T>): Generator<Tuple<T, N>> {
     let chunk: T[] = [];
     for (const item of input) {
       chunk.push(item);
       if (chunk.length === size) {
-        yield chunk;
+        yield chunk as Tuple<T, N>;
         chunk = [];
       }
     }
-    if (chunk.length > 0) yield chunk;
+    if (chunk.length > 0) yield chunk as Tuple<T, N>;
   };
 }
 
@@ -242,12 +256,6 @@ export function chunkBy<T>(fn: (item: T, index: number) => boolean) {
   };
 }
 
-// tuple of T with size N
-type Tuple<T, N extends number> = number extends N ? T[] : _TupleOf<T, N, []>;
-type _TupleOf<T, N extends number, $acc extends unknown[]> = $acc["length"] extends N
-  ? $acc
-  : _TupleOf<T, N, [T, ...$acc]>;
-
 export function window<T, N extends number>(size: N) {
   return function* (input: Iterable<T>): Generator<Tuple<T, N>> {
     let window: T[] = [];
@@ -255,7 +263,7 @@ export function window<T, N extends number>(size: N) {
       window.push(item);
       if (window.length === size) {
         yield window as Tuple<T, N>;
-        window.shift()!;
+        window.shift();
       }
     }
   };
