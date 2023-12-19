@@ -34,7 +34,7 @@ export function join(separator: string) {
     for (const item of input) {
       result += item + separator;
     }
-    return result.slice(0, -separator.length);
+    return result.slice(0, result.length - separator.length);
   };
 }
 
